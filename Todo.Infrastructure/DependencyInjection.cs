@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Todo.Application.Identity;
 using Todo.Application.Interfaces;
+using Todo.Infrastructure.Identity;
 using Todo.Infrastructure.Persistence;
 using Todo.Infrastructure.Repositories;
 
@@ -20,6 +23,19 @@ public static class DependencyInjection
         services.AddDbContext<TodoDbContext>(options =>
             options.UseSqlite(connectionString));
 
+        services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
+
+        services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
+        {
+            options.Password.RequiredLength = 8;
+            options.Password.RequireDigit = true;
+            options.Password.RequireUppercase = true;
+            options.User.RequireUniqueEmail = true;
+        })
+        .AddEntityFrameworkStores<TodoDbContext>()
+        .AddDefaultTokenProviders();
+
+        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<JsonDataImporter>();
 
@@ -27,10 +43,15 @@ public static class DependencyInjection
             Path.GetFullPath(listsFilePath),
             Path.GetFullPath(tasksFilePath)));
 
-        // services.AddSingleton<ITaskRepository>(_ => new JsonTaskRepository(tasksFilePath));
-        // services.AddSingleton<IListRepository>(_ => new JsonListRepository(listsFilePath));
         services.AddScoped<IListRepository, EfListRepository>();
         services.AddScoped<ITaskRepository, EfTaskRepository>();
+        services.AddScoped<IWorkspaceRepository, EfWorkspaceRepository>();
+        services.AddScoped<IWorkspaceInviteRepository, EfWorkspaceInviteRepository>();
+        services.AddScoped<IInviteTokenService, InviteTokenService>();
+        services.AddScoped<IActivityRepository, EfActivityRepository>();
+        services.AddScoped<INotificationRepository, EfNotificationRepository>();
+        services.AddScoped<IUserDirectory, EfUserDirectory>();
+        services.AddScoped<WorkspaceDataBackfill>();
 
         return services;
     }

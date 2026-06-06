@@ -56,6 +56,22 @@ public class JsonListRepository : IListRepository
             .ToList();
         return Result<List<TodoList>>.Success(filtered);
     }
+
+    public async Task<Result<List<TodoList>>> GetByWorkspaceIdsAsync(IReadOnlyCollection<Guid> workspaceIds)
+    {
+        if (workspaceIds.Count == 0)
+            return Result<List<TodoList>>.Success([]);
+
+        var lists = await LoadListsAsync();
+        var workspaceIdSet = workspaceIds.ToHashSet();
+        var filtered = lists
+            .Where(l => workspaceIdSet.Contains(l.WorkspaceId) && !l.IsDeleted)
+            .OrderByDescending(l => l.UpdatedAt)
+            .ToList();
+
+        return Result<List<TodoList>>.Success(filtered);
+    }
+
     public async Task<Result<TodoList>> AddAsync(TodoList list)
     {
         var lists = await LoadListsAsync();

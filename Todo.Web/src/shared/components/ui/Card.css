@@ -3,6 +3,7 @@
   border: var(--border-width-default) solid var(--color-border-default);
   border-radius: var(--radius-md);
   list-style: none;
+  transition: box-shadow var(--duration-fast) var(--ease-default);
 }
 
 .card--padding-md {
@@ -10,7 +11,7 @@
 }
 
 .card--padding-lg {
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-5) var(--space-6);
 }
 
 .card--elevation-0 {
@@ -23,4 +24,10 @@
 
 .card + .card {
   margin-top: var(--space-3);
+}
+
+.card--flat {
+  border: none;
+  background: transparent;
+  box-shadow: none;
 }

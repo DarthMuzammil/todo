@@ -1,19 +1,23 @@
-import { useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { AlertCircle } from 'lucide-react'
 import { ApiClientError } from '@/api/client'
+import { useWorkspaceRole } from '@/features/workspaces/hooks/useWorkspaceRole'
 import { Button, EmptyState } from '@/shared/components/ui'
 import { getErrorMessage } from '@/shared/utils/getErrorMessage'
 import { useList } from '../hooks/useList'
-import { useTasks } from '../hooks/useTasks'
+import { useLiveTasks } from '../hooks/useLiveTasks'
 import ListHeader from '../components/ListHeader'
 import ListNotFound from '../components/ListNotFound'
 import ListHeaderSkeleton from '../components/ListHeaderSkeleton'
 import TaskListSkeleton from '../components/TaskListSkeleton'
 import TaskListError from '../components/TaskListError'
 import TaskList from '../components/TaskList'
+import ActivityFeed from '../components/ActivityFeed'
 import CreateTaskForm from '../components/CreateTaskForm'
 
 export function ListPage() {
+  const navigate = useNavigate()
   const { listId } = useParams()
   const {
     list,
@@ -26,7 +30,15 @@ export function ListPage() {
     status: tasksStatus,
     error: tasksError,
     refetch: refetchTasks,
-  } = useTasks(listId)
+    connectionState,
+  } = useLiveTasks(listId)
+  const { canWrite, isViewer } = useWorkspaceRole(list?.workspaceId)
+  const [activityVersion, setActivityVersion] = useState(0)
+
+  function refreshTasksAndActivity() {
+    refetchTasks()
+    setActivityVersion((version) => version + 1)
+  }
 
   if (!listId) {
     return <p>Invalid list URL.</p>
@@ -57,8 +69,19 @@ export function ListPage() {
 
   return (
     <>
-      <ListHeader title={list.title} color={list.color} />
-      <CreateTaskForm listId={listId} onTaskCreated={refetchTasks} />
+      <ListHeader
+        listId={listId}
+        title={list.title}
+        color={list.color}
+        readOnly={!canWrite}
+        isViewer={isViewer}
+        connectionState={connectionState}
+        onUpdated={refetchList}
+        onDeleted={() => navigate('/')}
+      />
+      {canWrite ? (
+        <CreateTaskForm listId={listId} onTaskCreated={refreshTasksAndActivity} />
+      ) : null}
       {tasksStatus === 'loading' && <TaskListSkeleton />}
       {tasksStatus === 'error' && (
         <TaskListError
@@ -67,7 +90,15 @@ export function ListPage() {
         />
       )}
       {tasksStatus === 'success' && (
-        <TaskList listId={listId} tasks={tasks} onChanged={refetchTasks} />
+        <>
+          <TaskList
+            listId={listId}
+            tasks={tasks}
+            onChanged={refreshTasksAndActivity}
+            readOnly={!canWrite}
+          />
+          <ActivityFeed listId={listId} refreshVersion={activityVersion} />
+        </>
       )}
     </>
   )

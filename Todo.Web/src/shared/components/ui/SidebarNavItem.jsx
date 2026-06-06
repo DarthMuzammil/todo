@@ -11,6 +11,7 @@ import './SidebarNavItem.css'
  * @param {boolean} [props.end]
  * @param {import('react').ComponentType<{size?: number, className?: string}>} [props.icon]
  * @param {string} [props.swatchColor]
+ * @param {() => void} [props.onClick]
  */
 export default function SidebarNavItem({
   href,
@@ -18,6 +19,7 @@ export default function SidebarNavItem({
   end = false,
   icon: Icon,
   swatchColor,
+  onClick,
 }) {
   return (
     <NavLink
@@ -26,6 +28,7 @@ export default function SidebarNavItem({
         `sidebar-nav-item${isActive ? ' sidebar-nav-item--active' : ''}`
       }
       end={end}
+      onClick={onClick}
     >
       {swatchColor ? (
         <span

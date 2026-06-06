@@ -12,8 +12,9 @@
   position: absolute;
   inset: 0;
   border: none;
-  background: rgba(15, 23, 42, 0.4);
+  background: rgb(28 27 25 / 0.45);
   cursor: pointer;
+  backdrop-filter: blur(4px);
 }
 
 .confirm-dialog__panel {
@@ -22,7 +23,8 @@
   width: 100%;
   max-width: 400px;
   padding: var(--space-6);
-  border-radius: var(--radius-lg);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--radius-xl);
   background: var(--color-surface-default);
   box-shadow: var(--shadow-lg);
   animation: confirm-dialog-enter var(--duration-normal) var(--ease-out);
@@ -30,9 +32,11 @@
 
 .confirm-dialog__title {
   margin: 0;
+  font-family: var(--font-family-display);
   font-size: var(--font-heading-md);
   font-weight: 600;
   line-height: var(--line-height-heading-md);
+  letter-spacing: -0.02em;
   color: var(--color-text-primary);
 }
 

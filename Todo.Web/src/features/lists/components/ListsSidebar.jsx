@@ -1,15 +1,15 @@
-import { LayoutList, Plus } from 'lucide-react'
+import { Home, LayoutList } from 'lucide-react'
 import { Alert, Skeleton, SidebarNavItem } from '@/shared/components/ui'
 import { getErrorMessage } from '@/shared/utils/getErrorMessage'
 import { useLists } from '@/features/lists/hooks/useLists'
 import './ListsSidebar.css'
 
-export default function ListsSidebar() {
+export default function ListsSidebar({ onNavigate }) {
   const { lists, status, error } = useLists()
 
   return (
     <nav className="lists-sidebar" aria-label="Your lists">
-      <SidebarNavItem href="/" label="New list" icon={Plus} end />
+      <SidebarNavItem href="/" label="Home" icon={Home} end onClick={onNavigate} />
 
       {status === 'loading' && (
         <div className="lists-sidebar__loading" aria-busy="true">
@@ -39,6 +39,7 @@ export default function ListsSidebar() {
                 label={list.title}
                 icon={LayoutList}
                 swatchColor={list.color}
+                onClick={onNavigate}
               />
             </li>
           ))}

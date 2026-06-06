@@ -1,7 +1,26 @@
 .task-list {
-  margin: var(--space-lg) 0 0;
+  margin: var(--space-6) 0 0;
   padding: 0;
   width: 100%;
   max-width: 100%;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.task-list__item-wrap {
+  list-style: none;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.task-item {
+  border: none;
+  border-radius: var(--radius-lg);
+}
+
+.task-item__inner {
+  border: none;
+  background: transparent;
 }

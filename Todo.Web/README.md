@@ -38,21 +38,19 @@ Plain JavaScript (no TypeScript) + React 19 + Vite + React Router. Data fetching
 plain React (`useState` + `useEffect` custom hooks in `src/features/lists/hooks/`) — no
 data-fetching library. This is an intentionally simple baseline we will improve incrementally.
 
-## MVP owner ID
+## Authentication
 
-`POST /api/lists` requires an `ownerId`. Auth is not implemented yet, so the app uses a
-stand-in dev owner.
+The app uses JWT bearer auth against `Todo.Api`:
 
-| Item | Detail |
+| Flow | Detail |
 |------|--------|
-| **Strategy** | Fixed UUID in `src/shared/config/dev.js` |
-| **Default** | `00000000-0000-0000-0000-000000000001` |
-| **Override** | Set `VITE_DEV_OWNER_ID` in `.env.development` (see `.env.example`) |
-| **Usage** | `HomePage` passes `DEV_OWNER_ID` when calling `createList` |
-| **Replaced by** | real `ownerId` from the signed-in user (later auth work) |
+| **Register / login** | `/register`, `/login` pages → `POST /api/auth/*` |
+| **Session** | Access token in `localStorage` (`todo.accessToken`) |
+| **Protected routes** | `/` and `/lists/:id` require auth; unauthenticated users → `/login` |
+| **API client** | `src/api/client.js` attaches `Authorization: Bearer …` on every request |
+| **401 handling** | Clears token and redirects to login (refresh token deferred until BE-9) |
 
-All lists created in local dev belong to this owner until user authentication lands.
-Not suitable for production multi-user scenarios.
+Sign out clears the local token. Server-side logout (`POST /api/auth/logout`) is not wired yet.
 
 ## Testing
 

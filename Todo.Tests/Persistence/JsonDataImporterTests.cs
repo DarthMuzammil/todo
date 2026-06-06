@@ -1,9 +1,12 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
+using Todo.Application.Common;
 using Todo.Domain.Entities;
 using Todo.Domain.Enums;
+using Todo.Infrastructure;
 using Todo.Infrastructure.Persistence;
+using Todo.Infrastructure.Repositories;
 using TaskStatus = Todo.Domain.Enums.TaskStatus;
 
 namespace Todo.Tests.Persistence;
@@ -34,9 +37,14 @@ public class JsonDataImporterTests
         _context = new TodoDbContext(options);
         await _context.Database.MigrateAsync();
 
+        var personalWorkspaceService = new PersonalWorkspaceService(
+            new EfWorkspaceRepository(_context),
+            new UnitOfWork(_context));
+
         _importer = new JsonDataImporter(
             _context,
             new JsonDataPaths(_listsFile, _tasksFile),
+            personalWorkspaceService,
             NullLogger<JsonDataImporter>.Instance);
     }
 
@@ -97,7 +105,15 @@ public class JsonDataImporterTests
         });
 
         var list = await _context.Lists.IgnoreQueryFilters().SingleAsync();
-        Assert.That(list.Color, Is.EqualTo("#3B82F6"));
+        var user = await _context.Users.SingleAsync();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(list.Color, Is.EqualTo("#3B82F6"));
+            Assert.That(user.Id, Is.EqualTo(ownerId));
+            Assert.That(user.Name, Is.EqualTo("Imported User"));
+            Assert.That(user.UserName, Is.EqualTo($"import-{ownerId:N}@todo.local"));
+        });
     }
 
     [Test]

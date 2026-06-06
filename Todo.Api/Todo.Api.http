@@ -1,27 +1,68 @@
 @Todo.Api_HostAddress = http://localhost:5167
 @listId = 00000000-0000-0000-0000-000000000001
 @taskId = 00000000-0000-0000-0000-000000000002
+@accessToken = {{login.response.body.accessToken}}
+
+### Register
+# @name register
+POST {{Todo.Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@local.test",
+  "password": "TestPass1",
+  "name": "Test User"
+}
+
+### Login
+# @name login
+POST {{Todo.Api_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@local.test",
+  "password": "TestPass1"
+}
+
+### Refresh access token (uses httpOnly refresh cookie from login)
+POST {{Todo.Api_HostAddress}}/api/auth/refresh
+
+### Logout (clears refresh cookie)
+POST {{Todo.Api_HostAddress}}/api/auth/logout
+
+### Get current user
+GET {{Todo.Api_HostAddress}}/api/users/me
+Authorization: Bearer {{accessToken}}
+Accept: application/json
+
+### Get all lists (current user)
+GET {{Todo.Api_HostAddress}}/api/lists
+Authorization: Bearer {{accessToken}}
+Accept: application/json
 
 ### Get list by id
 GET {{Todo.Api_HostAddress}}/api/lists/{{listId}}
+Authorization: Bearer {{accessToken}}
 Accept: application/json
 
 ### Create list
 POST {{Todo.Api_HostAddress}}/api/lists
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-  "ownerId": "00000000-0000-0000-0000-000000000001",
   "title": "My List",
   "color": "#3b82f6"
 }
 
 ### Get tasks for a list
 GET {{Todo.Api_HostAddress}}/api/lists/{{listId}}/tasks
+Authorization: Bearer {{accessToken}}
 Accept: application/json
 
 ### Create task
 POST {{Todo.Api_HostAddress}}/api/lists/{{listId}}/tasks
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
@@ -33,6 +74,7 @@ Content-Type: application/json
 
 ### Update task status
 PATCH {{Todo.Api_HostAddress}}/api/lists/{{listId}}/tasks/{{taskId}}/status
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
@@ -41,3 +83,42 @@ Content-Type: application/json
 
 ### Delete task
 DELETE {{Todo.Api_HostAddress}}/api/lists/{{listId}}/tasks/{{taskId}}
+Authorization: Bearer {{accessToken}}
+
+@workspaceId = 00000000-0000-0000-0000-000000000010
+@inviteToken = paste-token-from-send-invite-response
+
+### Get my workspaces
+GET {{Todo.Api_HostAddress}}/api/workspaces
+Authorization: Bearer {{accessToken}}
+
+### Create shared workspace
+POST {{Todo.Api_HostAddress}}/api/workspaces
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "Family"
+}
+
+### Send workspace invite (Owner only; returns token for dev/testing)
+POST {{Todo.Api_HostAddress}}/api/workspaces/{{workspaceId}}/invites
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "email": "partner@example.com",
+  "role": 1
+}
+
+### List pending invites for workspace
+GET {{Todo.Api_HostAddress}}/api/workspaces/{{workspaceId}}/invites
+Authorization: Bearer {{accessToken}}
+
+### Accept invite (invitee must be logged in with matching email)
+POST {{Todo.Api_HostAddress}}/api/invites/{{inviteToken}}/accept
+Authorization: Bearer {{accessToken}}
+
+### Decline invite
+POST {{Todo.Api_HostAddress}}/api/invites/{{inviteToken}}/decline
+Authorization: Bearer {{accessToken}}

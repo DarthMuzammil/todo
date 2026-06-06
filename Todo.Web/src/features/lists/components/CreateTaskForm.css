@@ -1,16 +1,20 @@
-.create-task-form__section {
-  padding: var(--space-4);
-  border: var(--border-width-default) solid var(--color-border-default);
-  border-radius: var(--radius-md);
-  background: var(--color-surface-default);
+.create-task-form__wrap {
   margin-bottom: var(--space-6);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.create-task-form__section {
+  padding: var(--space-5) var(--space-6);
 }
 
 .create-task-form__title {
-  margin: 0 0 var(--space-4);
-  font-size: var(--font-heading-md);
+  margin: 0 0 var(--space-5);
+  font-size: var(--font-heading-sm);
   font-weight: 600;
-  line-height: var(--line-height-heading-md);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
 }
 
 .create-task-form {

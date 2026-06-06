@@ -1,40 +1,40 @@
 :root {
-  /* Neutral scale (DS-1) */
-  --color-neutral-50: #f8fafc;
-  --color-neutral-100: #f1f5f9;
-  --color-neutral-200: #e2e8f0;
-  --color-neutral-300: #cbd5e1;
-  --color-neutral-400: #94a3b8;
-  --color-neutral-500: #64748b;
-  --color-neutral-600: #475569;
-  --color-neutral-700: #334155;
-  --color-neutral-800: #1e293b;
-  --color-neutral-900: #0f172a;
+  /* Warm stone neutrals */
+  --color-neutral-50: #faf9f7;
+  --color-neutral-100: #f3f1ec;
+  --color-neutral-200: #e8e4dc;
+  --color-neutral-300: #d4cfc4;
+  --color-neutral-400: #a8a093;
+  --color-neutral-500: #7a7368;
+  --color-neutral-600: #5c564d;
+  --color-neutral-700: #3f3b35;
+  --color-neutral-800: #2a2723;
+  --color-neutral-900: #1c1b19;
 
-  /* Brand */
-  --color-brand-50: #eff6ff;
-  --color-brand-100: #dbeafe;
-  --color-brand-500: #3b82f6;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-800: #1e40af;
+  /* Forest sage brand */
+  --color-brand-50: #f0f4ef;
+  --color-brand-100: #dce6da;
+  --color-brand-500: #5c7a52;
+  --color-brand-600: #4a6741;
+  --color-brand-700: #3d5536;
+  --color-brand-800: #2f4229;
 
   /* Semantic colors */
-  --color-success-text: #166534;
-  --color-success-surface: #dcfce7;
-  --color-success-border: #bbf7d0;
+  --color-success-text: #2d5a3a;
+  --color-success-surface: #e4f0e7;
+  --color-success-border: #b8d4be;
 
-  --color-warning-text: #9a3412;
-  --color-warning-surface: #ffedd5;
-  --color-warning-border: #fed7aa;
+  --color-warning-text: #8b4513;
+  --color-warning-surface: #faf0e4;
+  --color-warning-border: #e8cdb0;
 
-  --color-danger-text: #b91c1c;
-  --color-danger-surface: #fef2f2;
-  --color-danger-border: #fecaca;
+  --color-danger-text: #9b2c2c;
+  --color-danger-surface: #fceeee;
+  --color-danger-border: #f0c4c4;
 
-  --color-info-text: #1d4ed8;
-  --color-info-surface: #dbeafe;
-  --color-info-border: #bfdbfe;
+  --color-info-text: #3d5536;
+  --color-info-surface: #e8efe6;
+  --color-info-border: #c5d4c0;
 
   /* Semantic aliases — light mode */
   --color-text-primary: var(--color-neutral-900);
@@ -42,12 +42,14 @@
   --color-text-subtle: var(--color-neutral-500);
   --color-text-disabled: var(--color-neutral-400);
   --color-text-inverse: var(--color-neutral-50);
+  --color-text-link: var(--color-brand-700);
 
   --color-bg-page: var(--color-neutral-50);
   --color-bg-subtle: var(--color-neutral-100);
-  --color-surface-default: #ffffff;
-  --color-surface-raised: #ffffff;
+  --color-surface-default: #fffcf8;
+  --color-surface-raised: #fffcf8;
   --color-surface-sunken: var(--color-neutral-100);
+  --color-surface-subtle: var(--color-neutral-100);
 
   --color-border-default: var(--color-neutral-200);
   --color-border-strong: var(--color-neutral-300);
@@ -55,9 +57,20 @@
 
   --color-action-primary: var(--color-brand-600);
   --color-action-primary-hover: var(--color-brand-700);
-  --color-action-primary-text: #ffffff;
+  --color-action-primary-text: #fffcf8;
 
-  /* v1 aliases (migration support) */
+  /* Navigation — sidebar / tab language */
+  --color-nav-text: var(--color-text-secondary);
+  --color-nav-text-hover: var(--color-text-primary);
+  --color-nav-text-active: var(--color-brand-800);
+  --color-nav-bg-hover: var(--color-bg-subtle);
+  --color-nav-bg-active: var(--color-brand-50);
+  --color-nav-indicator: var(--color-brand-600);
+
+  /* Decorative accent — eyebrows, icons (must contrast on page bg) */
+  --color-accent-muted: var(--color-brand-600);
+
+  /* v1 aliases */
   --color-text: var(--color-text-primary);
   --color-text-muted: var(--color-text-secondary);
   --color-bg: var(--color-bg-page);
@@ -66,23 +79,26 @@
   --color-primary: var(--color-brand-600);
   --color-danger: var(--color-danger-text);
 
-  /* Typography (DS-2) */
-  --font-family-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  /* Typography */
+  --font-family-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-family-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-family-mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
 
-  --font-display: 1.875rem;
-  --font-heading-lg: 1.5rem;
+  --font-display: 2rem;
+  --font-heading-lg: 1.625rem;
   --font-heading-md: 1.125rem;
+  --font-heading-sm: 0.9375rem;
   --font-body: 1rem;
   --font-body-sm: 0.875rem;
   --font-caption: 0.75rem;
   --font-label: 0.875rem;
 
-  --line-height-display: 1.2;
-  --line-height-heading-lg: 1.3;
+  --line-height-display: 1.15;
+  --line-height-heading-lg: 1.25;
   --line-height-heading-md: 1.35;
-  --line-height-body: 1.5;
-  --line-height-body-sm: 1.45;
+  --line-height-heading-sm: 1.4;
+  --line-height-body: 1.55;
+  --line-height-body-sm: 1.5;
   --line-height-caption: 1.4;
   --line-height-label: 1.4;
 
@@ -93,7 +109,7 @@
   --font-size-xl: var(--font-heading-lg);
   --line-height: var(--line-height-body);
 
-  /* Spacing (DS-3) — 4px base grid */
+  /* Spacing */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -112,9 +128,9 @@
   --space-xl: var(--space-6);
 
   /* Layout */
-  --layout-header-height: 56px;
-  --layout-sidebar-width: 240px;
-  --layout-content-max: 45rem;
+  --layout-header-height: 60px;
+  --layout-sidebar-width: 260px;
+  --layout-content-max: 46rem;
   --layout-gutter: var(--space-4);
   --content-max-width: var(--layout-content-max);
 
@@ -123,20 +139,21 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
 
-  /* Radii (DS-4) */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
   --radius-full: 9999px;
 
   --border-width-default: 1px;
   --border-width-focus: 2px;
 
-  /* Shadows */
+  /* Shadows — warm tint */
   --shadow-none: none;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 1px 2px rgba(28, 27, 25, 0.04), 0 1px 3px rgba(28, 27, 25, 0.06);
+  --shadow-md: 0 4px 16px rgba(28, 27, 25, 0.06), 0 2px 6px rgba(28, 27, 25, 0.04);
+  --shadow-lg: 0 16px 48px rgba(28, 27, 25, 0.1), 0 4px 12px rgba(28, 27, 25, 0.05);
 
   /* Z-index */
   --z-base: 0;
@@ -151,11 +168,13 @@
   --icon-lg: 24px;
   --icon-xl: 48px;
 
-  /* Motion (DS-7) */
+  /* Motion */
   --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 350ms;
-  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-normal: 280ms;
+  --duration-slow: 400ms;
+  --motion-fast: var(--duration-fast);
+  --motion-normal: var(--duration-normal);
+  --ease-default: cubic-bezier(0.21, 0.47, 0.32, 0.98);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
 
@@ -163,30 +182,48 @@
 }
 
 [data-theme='dark'] {
-  --color-text-primary: var(--color-neutral-50);
-  --color-text-secondary: var(--color-neutral-400);
-  --color-text-subtle: var(--color-neutral-500);
-  --color-text-disabled: var(--color-neutral-600);
+  --color-text-primary: #f5f4f1;
+  --color-text-secondary: #b8b2a8;
+  --color-text-subtle: #8a847a;
+  --color-text-disabled: #6b655c;
+  --color-text-link: #a8c4a0;
 
-  --color-bg-page: var(--color-neutral-900);
-  --color-bg-subtle: var(--color-neutral-800);
-  --color-surface-default: var(--color-neutral-800);
-  --color-surface-raised: var(--color-neutral-700);
-  --color-surface-sunken: var(--color-neutral-900);
+  --color-bg-page: #141312;
+  --color-bg-subtle: #1e1d1b;
+  --color-surface-default: #1a1917;
+  --color-surface-raised: #242220;
+  --color-surface-sunken: #0f0e0d;
+  --color-surface-subtle: #1e1d1b;
 
-  --color-border-default: var(--color-neutral-700);
-  --color-border-strong: var(--color-neutral-600);
+  --color-border-default: #2e2c29;
+  --color-border-strong: #3d3a36;
 
-  --color-success-surface: color-mix(in srgb, #22c55e 15%, var(--color-neutral-800));
-  --color-warning-surface: color-mix(in srgb, #f97316 15%, var(--color-neutral-800));
-  --color-danger-surface: color-mix(in srgb, #ef4444 15%, var(--color-neutral-800));
-  --color-info-surface: color-mix(in srgb, #3b82f6 15%, var(--color-neutral-800));
+  /* Semantic text — lightened for dark surfaces (WCAG 4.5:1 on mixed surfaces) */
+  --color-success-text: #86efac;
+  --color-warning-text: #fdba74;
+  --color-danger-text: #fca5a5;
+  --color-info-text: #b4cdb0;
 
-  --color-brand-50: color-mix(in srgb, var(--color-brand-600) 15%, var(--color-neutral-800));
+  --color-success-surface: color-mix(in srgb, #4ade80 12%, var(--color-neutral-800));
+  --color-warning-surface: color-mix(in srgb, #f97316 12%, var(--color-neutral-800));
+  --color-danger-surface: color-mix(in srgb, #ef4444 12%, var(--color-neutral-800));
+  --color-info-surface: color-mix(in srgb, #5c7a52 14%, var(--color-neutral-800));
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.24);
-  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.24);
+  --color-brand-50: color-mix(in srgb, var(--color-brand-500) 16%, var(--color-neutral-800));
+
+  /* Navigation — inverted for dark surfaces */
+  --color-nav-text: var(--color-text-secondary);
+  --color-nav-text-hover: var(--color-text-primary);
+  --color-nav-text-active: var(--color-text-primary);
+  --color-nav-bg-hover: var(--color-surface-raised);
+  --color-nav-bg-active: color-mix(in srgb, var(--color-brand-500) 18%, var(--color-neutral-800));
+  --color-nav-indicator: #9cb894;
+
+  --color-accent-muted: #9cb894;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.45);
 }
 
 @media (min-width: 640px) {
@@ -208,6 +245,8 @@ body {
   line-height: var(--line-height-body);
   color: var(--color-text-primary);
   background: var(--color-bg-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition:
     background-color var(--duration-fast) var(--ease-default),
     color var(--duration-fast) var(--ease-default);

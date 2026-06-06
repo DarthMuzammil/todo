@@ -18,6 +18,7 @@ public class TodoTask
     public DateTime UpdatedAt { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime? DeletedAt { get; set; }
+    public long Version { get; set; } = 1;
     public Guid ListId { get; set; }
 
 }

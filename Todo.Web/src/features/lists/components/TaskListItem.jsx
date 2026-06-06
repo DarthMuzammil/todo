@@ -19,6 +19,7 @@ import {
   ConfirmDialog,
   Select,
 } from '@/shared/components/ui'
+import { MagicCard, StaggerItem } from '@/shared/components/magic-ui'
 import { getErrorMessage } from '@/shared/utils/getErrorMessage'
 import {
   formatDueDate,
@@ -26,7 +27,7 @@ import {
 } from '@/features/lists/utils/formatDueDate'
 import './TaskListItem.css'
 
-export default function TaskListItem({ listId, task, onChanged }) {
+export default function TaskListItem({ listId, task, index = 0, onChanged, readOnly = false }) {
   const [isPending, setIsPending] = useState(false)
   const [isDeletePending, setIsDeletePending] = useState(false)
   const [confirmingDelete, setConfirmingDelete] = useState(false)
@@ -80,72 +81,78 @@ export default function TaskListItem({ listId, task, onChanged }) {
 
   return (
     <>
-      <Card as="li" padding="lg" className="task-item">
-        <div className="task-item__header">
-          <h3 className="task-item__title">{task.title}</h3>
-          <div className="task-item__badges">
-            <Badge variant={getPriorityBadgeVariant(task.priority)}>
-              {getPriorityLabel(task.priority)}
-            </Badge>
-            <Badge
-              variant={getStatusBadgeVariant(task.status)}
-              strikethrough={isCancelledStatus(task.status)}
-              data-testid={`task-status-badge-${task.id}`}
-            >
-              {getStatusLabel(task.status)}
-            </Badge>
-          </div>
-        </div>
+      <StaggerItem index={index} className="task-list__item-wrap">
+        <MagicCard className="task-item">
+          <Card as="div" padding="lg" className="task-item__inner card--flat">
+            <div className="task-item__header">
+              <h3 className="task-item__title">{task.title}</h3>
+              <div className="task-item__badges">
+                <Badge variant={getPriorityBadgeVariant(task.priority)}>
+                  {getPriorityLabel(task.priority)}
+                </Badge>
+                <Badge
+                  variant={getStatusBadgeVariant(task.status)}
+                  strikethrough={isCancelledStatus(task.status)}
+                  data-testid={`task-status-badge-${task.id}`}
+                >
+                  {getStatusLabel(task.status)}
+                </Badge>
+              </div>
+            </div>
 
-        {task.description && (
-          <p className="task-item__description">{task.description}</p>
-        )}
+            {task.description && (
+              <p className="task-item__description">{task.description}</p>
+            )}
 
-        {formattedDueDate && (
-          <p
-            className={`task-item__due${overdue ? ' task-item__due--overdue' : ''}`}
-          >
-            Due {formattedDueDate}
-            {overdue && ' (overdue)'}
-          </p>
-        )}
+            {formattedDueDate && (
+              <p
+                className={`task-item__due${overdue ? ' task-item__due--overdue' : ''}`}
+              >
+                Due {formattedDueDate}
+                {overdue && ' (overdue)'}
+              </p>
+            )}
 
-        <div className="task-item__actions">
-          <Select
-            id={statusSelectId}
-            label="Status"
-            className="task-item__status-select"
-            value={task.status}
-            disabled={isBusy || confirmingDelete}
-            onChange={handleStatusChange}
-          >
-            {STATUS_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Select>
+            {!readOnly && (
+            <div className="task-item__actions">
+              <Select
+                id={statusSelectId}
+                label="Status"
+                className="task-item__status-select"
+                value={task.status}
+                disabled={isBusy || confirmingDelete}
+                onChange={handleStatusChange}
+              >
+                {STATUS_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </Select>
 
-          <Button
-            ref={deleteButtonRef}
-            variant="danger"
-            size="sm"
-            onClick={() => setConfirmingDelete(true)}
-            disabled={isBusy}
-            aria-label={`Delete ${task.title}`}
-          >
-            <Trash2 aria-hidden="true" size={16} strokeWidth={2} />
-            Delete
-          </Button>
-        </div>
+              <Button
+                ref={deleteButtonRef}
+                variant="danger"
+                size="sm"
+                onClick={() => setConfirmingDelete(true)}
+                disabled={isBusy}
+                aria-label={`Delete ${task.title}`}
+              >
+                <Trash2 aria-hidden="true" size={16} strokeWidth={2} />
+                Delete
+              </Button>
+            </div>
+            )}
 
-        {isPending && (
-          <p className="task-item__feedback" aria-live="polite">
-            Updating…
-          </p>
-        )}
-        {actionError && <Alert variant="error" compact message={actionError} />}
-      </Card>
+            {isPending && (
+              <p className="task-item__feedback" aria-live="polite">
+                Updating…
+              </p>
+            )}
+            {actionError && <Alert variant="error" compact message={actionError} />}
+          </Card>
+        </MagicCard>
+      </StaggerItem>
 
       <ConfirmDialog
         open={confirmingDelete}

@@ -15,6 +15,8 @@ public static class DatabaseInitializer
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<TodoDbContext>>();
 
         await context.Database.MigrateAsync();
+        var backfill = scope.ServiceProvider.GetRequiredService<WorkspaceDataBackfill>();
+        await backfill.RunAsync();
 
         logger.LogInformation("SQLite database initialized at {Path}", GetDatabasePath(context));
 

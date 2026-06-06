@@ -1,3 +1,3 @@
 namespace Todo.Application.Queries.GetListsByOwnerId;
 
-public record GetListsByOwnerIdQuery(Guid OwnerId);
+public record GetListsByOwnerIdQuery(Guid UserId);

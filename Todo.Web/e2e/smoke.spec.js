@@ -1,12 +1,13 @@
 import { expect, test } from '@playwright/test'
+import { registerUser } from './helpers/auth.js'
 
 test('create list, add task, and mark done', async ({ page }) => {
+  await registerUser(page)
+
   const listTitle = `E2E List ${Date.now()}`
   const taskTitle = `E2E Task ${Date.now()}`
 
-  await page.goto('/')
-
-  await page.getByLabel(/^title$/i).fill(listTitle)
+  await page.getByRole('textbox', { name: /^title$/i }).fill(listTitle)
   await page.getByRole('button', { name: /create list/i }).click()
 
   await expect(page).toHaveURL(/\/lists\//)

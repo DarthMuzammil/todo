@@ -1,0 +1,177 @@
+.auth-form-layout {
+  display: grid;
+  min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+}
+
+.auth-form-layout__ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.auth-form-layout__gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%, color-mix(in srgb, var(--color-brand-500) 10%, transparent), transparent),
+    radial-gradient(ellipse 50% 40% at 80% 100%, color-mix(in srgb, #c4a35a 8%, transparent), transparent),
+    var(--color-bg-page);
+}
+
+.auth-form-layout__dots {
+  opacity: 0.4;
+}
+
+[data-theme='dark'] .auth-form-layout__dots {
+  opacity: 0.22;
+}
+
+.auth-form-layout__hero {
+  display: none;
+}
+
+.auth-form-layout__panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--layout-gutter);
+}
+
+.auth-form-layout__card {
+  width: 100%;
+  max-width: 26rem;
+  padding: var(--space-8);
+  border: var(--border-width-default) solid var(--color-border-default);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--color-surface-default) 92%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-lg);
+}
+
+.auth-form-layout__header {
+  margin-bottom: var(--space-6);
+}
+
+.auth-form-layout__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+}
+
+.auth-form-layout__brand-icon {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-brand-600);
+  color: var(--color-action-primary-text);
+  font-family: var(--font-family-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.auth-form-layout__brand-text {
+  font-family: var(--font-family-display);
+  font-size: var(--font-body-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: -0.01em;
+}
+
+.auth-form-layout__title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: var(--font-heading-lg);
+  font-weight: 600;
+  line-height: var(--line-height-heading-lg);
+  letter-spacing: -0.02em;
+}
+
+.auth-form-layout__subtitle {
+  margin: var(--space-2) 0 0;
+  font-size: var(--font-body-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-body-sm);
+}
+
+.auth-form-layout__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.auth-form-layout__actions {
+  margin-top: var(--space-2);
+}
+
+.auth-form-layout__footer {
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: var(--border-width-default) solid var(--color-border-default);
+}
+
+.auth-form-layout__switch {
+  margin: 0;
+  font-size: var(--font-body-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.auth-form-layout__link {
+  color: var(--color-text-link);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-form-layout__link:hover {
+  text-decoration: underline;
+}
+
+.auth-loading {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  color: var(--color-text-secondary);
+}
+
+@media (min-width: 900px) {
+  .auth-form-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .auth-form-layout__hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-12) var(--space-10);
+  }
+
+  .auth-form-layout__hero-title {
+    margin: 0;
+    max-width: 16ch;
+    font-family: var(--font-family-display);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 600;
+    line-height: var(--line-height-display);
+    letter-spacing: -0.03em;
+  }
+
+  .auth-form-layout__hero-text {
+    margin: var(--space-4) 0 0;
+    max-width: 36ch;
+    font-size: var(--font-body);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-body);
+  }
+
+  .auth-form-layout__panel {
+    border-left: var(--border-width-default) solid var(--color-border-default);
+    background: color-mix(in srgb, var(--color-surface-default) 60%, transparent);
+  }
+}

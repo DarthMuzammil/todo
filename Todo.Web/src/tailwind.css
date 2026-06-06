@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: var(--color-bg-page);
+  --color-foreground: var(--color-text-primary);
+  --color-border: var(--color-border-default);
+  --color-muted: var(--color-bg-subtle);
+  --color-muted-foreground: var(--color-text-secondary);
+  --color-accent: var(--color-brand-100);
+  --color-accent-foreground: var(--color-nav-text-active);
+  --color-primary: var(--color-action-primary);
+  --color-primary-foreground: var(--color-action-primary-text);
+  --font-sans: var(--font-family-sans);
+  --font-display: var(--font-family-display);
+  --radius-lg: var(--radius-lg);
+  --radius-md: var(--radius-md);
+  --radius-sm: var(--radius-sm);
+}

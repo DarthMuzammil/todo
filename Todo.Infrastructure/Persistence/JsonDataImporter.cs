@@ -1,7 +1,9 @@
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Todo.Application.Common;
 using Todo.Domain.Entities;
+using Todo.Infrastructure.Identity;
 
 namespace Todo.Infrastructure.Persistence;
 
@@ -11,15 +13,18 @@ public class JsonDataImporter
 
     private readonly TodoDbContext _context;
     private readonly JsonDataPaths _paths;
+    private readonly PersonalWorkspaceService _personalWorkspaceService;
     private readonly ILogger<JsonDataImporter> _logger;
 
     public JsonDataImporter(
         TodoDbContext context,
         JsonDataPaths paths,
+        PersonalWorkspaceService personalWorkspaceService,
         ILogger<JsonDataImporter> logger)
     {
         _context = context;
         _paths = paths;
+        _personalWorkspaceService = personalWorkspaceService;
         _logger = logger;
     }
 
@@ -72,7 +77,7 @@ public class JsonDataImporter
                 continue;
             }
 
-            _context.Users.Add(CreatePlaceholderUser(userId));
+            _context.Users.Add(ApplicationUserFactory.CreatePlaceholder(userId));
             imported++;
         }
 
@@ -94,13 +99,18 @@ public class JsonDataImporter
             .ToHashSetAsync(cancellationToken);
 
         var imported = 0;
+
         foreach (var list in lists)
         {
             if (existingListIds.Contains(list.Id))
+                continue;
+            var workspaceResult = await _personalWorkspaceService.EnsurePersonalWorkspaceAsync(list.OwnerId);
+            if (!workspaceResult.IsSuccess)
             {
+                _logger.LogWarning("Skipping list {ListId}: {Error}", list.Id, workspaceResult.Error);
                 continue;
             }
-
+            list.WorkspaceId = workspaceResult.Value!.Id;
             list.Color = NormalizeColor(list.Color);
             _context.Lists.Add(list);
             imported++;
@@ -151,7 +161,7 @@ public class JsonDataImporter
             if (task.AssigneeId.HasValue
                 && !await _context.Users.AnyAsync(user => user.Id == task.AssigneeId, cancellationToken))
             {
-                _context.Users.Add(CreatePlaceholderUser(task.AssigneeId.Value));
+                _context.Users.Add(ApplicationUserFactory.CreatePlaceholder(task.AssigneeId.Value));
                 await _context.SaveChangesAsync(cancellationToken);
             }
 
@@ -166,14 +176,6 @@ public class JsonDataImporter
 
         return (imported, skipped);
     }
-
-    private static User CreatePlaceholderUser(Guid id) =>
-        new()
-        {
-            Id = id,
-            Name = "Imported User",
-            Email = $"import-{id:N}@todo.local"
-        };
 
     private static string NormalizeColor(string? color) =>
         string.IsNullOrWhiteSpace(color) ? DefaultListColor : color;

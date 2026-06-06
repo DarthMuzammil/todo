@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Todo.Application.Identity;
 using Todo.Domain.Entities;
 
 namespace Todo.Infrastructure.Persistence.Configurations;
@@ -23,7 +24,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasForeignKey(c => c.TaskId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<User>()
+        builder.HasOne<ApplicationUser>()
             .WithMany()
             .HasForeignKey(c => c.AuthorId)
             .OnDelete(DeleteBehavior.Restrict);

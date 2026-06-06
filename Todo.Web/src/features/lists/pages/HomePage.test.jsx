@@ -1,18 +1,20 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { MemoryRouter } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createList } from '@/api/lists'
+import { personalWorkspace } from '@/test/workspaceFixtures'
+import { WorkspaceTestProviders } from '@/test/workspaceTestUtils'
 import { HomePage } from './HomePage'
 
 const navigate = vi.fn()
 
 vi.mock('@/api/lists', () => ({
   createList: vi.fn(),
+  getLists: vi.fn().mockResolvedValue([]),
 }))
 
-vi.mock('@/shared/config/dev', () => ({
-  DEV_OWNER_ID: '00000000-0000-0000-0000-000000000001',
+vi.mock('@/features/auth', () => ({
+  useAuth: () => ({ user: { name: 'Test User' } }),
 }))
 
 vi.mock('react-router-dom', async () => {
@@ -29,15 +31,19 @@ describe('HomePage', () => {
     createList.mockReset()
   })
 
-  it('creates a list and navigates to the list page', async () => {
+  it('creates a list in the current workspace and navigates to the list page', async () => {
     const user = userEvent.setup()
     createList.mockResolvedValue({ id: 'list-123', title: 'Groceries' })
 
     render(
-      <MemoryRouter>
+      <WorkspaceTestProviders>
         <HomePage />
-      </MemoryRouter>,
+      </WorkspaceTestProviders>,
     )
+
+    await waitFor(() => {
+      expect(screen.getByRole('textbox', { name: /title/i })).toBeInTheDocument()
+    })
 
     await user.type(
       screen.getByRole('textbox', { name: /title/i }),
@@ -47,9 +53,9 @@ describe('HomePage', () => {
 
     await waitFor(() => {
       expect(createList).toHaveBeenCalledWith({
-        ownerId: '00000000-0000-0000-0000-000000000001',
         title: 'Groceries',
         color: null,
+        workspaceId: personalWorkspace.id,
       })
     })
 

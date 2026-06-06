@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Todo.Application.Identity;
 using Todo.Domain.Entities;
 
 namespace Todo.Infrastructure.Persistence.Configurations;
@@ -38,7 +39,7 @@ public class TodoTaskConfiguration : IEntityTypeConfiguration<TodoTask>
             .HasForeignKey(t => t.ParentTaskId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne<User>()
+        builder.HasOne<ApplicationUser>()
             .WithMany()
             .HasForeignKey(t => t.AssigneeId)
             .OnDelete(DeleteBehavior.SetNull);

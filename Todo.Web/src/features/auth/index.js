@@ -1,0 +1,6 @@
+export { AuthProvider } from './context/AuthProvider'
+export { useAuth } from './context/AuthContext'
+export { ProtectedRoute } from './components/ProtectedRoute'
+export { LoginPage } from './pages/LoginPage'
+export { RegisterPage } from './pages/RegisterPage'
+export { SettingsPage } from './pages/SettingsPage'

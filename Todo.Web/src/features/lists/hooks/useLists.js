@@ -1,23 +1,21 @@
 import { useLocation } from 'react-router-dom'
 import { getLists } from '@/api/lists'
-import { DEV_OWNER_ID } from '@/shared/config/dev'
+import { useWorkspace } from '@/features/workspaces/hooks/useWorkspace'
 import { useAsync } from '@/shared/hooks/useAsync'
 
-function fetchOwnerLists() {
-  return getLists(DEV_OWNER_ID)
+function fetchLists() {
+  return getLists()
 }
 
 export function useLists() {
   const location = useLocation()
-  const { data, status, error, refetch } = useAsync(
-    `${DEV_OWNER_ID}:${location.pathname}`,
-    fetchOwnerLists,
+  const { selectedWorkspaceId } = useWorkspace()
+  const cacheKey = `${location.pathname}:${selectedWorkspaceId ?? 'none'}`
+  const { data, status, error, refetch } = useAsync(cacheKey, fetchLists)
+
+  const lists = (data ?? []).filter(
+    (list) => !selectedWorkspaceId || list.workspaceId === selectedWorkspaceId,
   )
 
-  return {
-    lists: data ?? [],
-    status,
-    error,
-    refetch,
-  }
+  return { lists, status, error, refetch }
 }

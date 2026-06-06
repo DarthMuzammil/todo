@@ -1,0 +1,48 @@
+.workspace-switcher {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.workspace-switcher__row {
+  position: relative;
+}
+
+.workspace-switcher__select {
+  min-width: 10rem;
+}
+
+.workspace-switcher__select .select-field__wrapper {
+  margin: 0;
+}
+
+.workspace-switcher__chevron {
+  position: absolute;
+  right: var(--space-3);
+  bottom: 0.65rem;
+  pointer-events: none;
+  color: var(--color-text-muted);
+}
+
+.workspace-switcher__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.workspace-switcher__create {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-sunken);
+}
+
+.workspace-switcher__error {
+  margin: 0;
+  color: var(--color-danger-text, #b91c1c);
+  font-size: var(--font-body-sm);
+}

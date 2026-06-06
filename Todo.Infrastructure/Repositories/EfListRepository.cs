@@ -4,6 +4,8 @@ using Todo.Application.Interfaces;
 using Todo.Domain.Entities;
 using Todo.Infrastructure.Persistence;
 
+namespace Todo.Infrastructure.Repositories;
+
 public class EfListRepository : IListRepository
 {
     public readonly TodoDbContext _context;
@@ -12,7 +14,7 @@ public class EfListRepository : IListRepository
     {
         _context = context;
     }
-    public async Task<Result<TodoList>> GetByIdAsync(Guid id)
+    public async Task<Result<TodoList>> GetByIdAsync(System.Guid id)
     {
         var list = await _context.Lists.FirstOrDefaultAsync(l => l.Id == id);
         if (list is null)
@@ -21,7 +23,7 @@ public class EfListRepository : IListRepository
         }
         return Result<TodoList>.Success(list);
     }
-    public async Task<Result<List<TodoList>>> GetByOwnerIdAsync(Guid ownerId)
+    public async Task<Result<List<TodoList>>> GetByOwnerIdAsync(System.Guid ownerId)
     {
         var lists = await _context.Lists
             .Where(l => l.OwnerId == ownerId)
@@ -30,6 +32,20 @@ public class EfListRepository : IListRepository
 
         return Result<List<TodoList>>.Success(lists);
     }
+
+    public async Task<Result<List<TodoList>>> GetByWorkspaceIdsAsync(IReadOnlyCollection<System.Guid> workspaceIds)
+    {
+        if (workspaceIds.Count == 0)
+            return Result<List<TodoList>>.Success([]);
+
+        var lists = await _context.Lists
+            .Where(l => workspaceIds.Contains(l.WorkspaceId))
+            .OrderByDescending(l => l.UpdatedAt)
+            .ToListAsync();
+
+        return Result<List<TodoList>>.Success(lists);
+    }
+
     public Task<Result<TodoList>> AddAsync(TodoList list)
     {
         _context.Lists.Add(list);
@@ -47,7 +63,7 @@ public class EfListRepository : IListRepository
         _context.Entry(existing).CurrentValues.SetValues(list);
         return Result<TodoList>.Success(existing);
     }
-    public async Task<Result<TodoList>> RemoveAsync(Guid id)
+    public async Task<Result<TodoList>> RemoveAsync(System.Guid id)
     {
         var list = await _context.Lists
             .IgnoreQueryFilters()

@@ -12,11 +12,13 @@ export function useAsync(key, fetcher, { initialData = null } = {}) {
   const fetcherRef = useRef(fetcher)
   const enabled = key != null && key !== ''
 
-  fetcherRef.current = fetcher
-
   const refetch = useCallback(() => {
     setReloadCount((count) => count + 1)
   }, [])
+
+  useEffect(() => {
+    fetcherRef.current = fetcher
+  }, [fetcher])
 
   useEffect(() => {
     if (!enabled) {

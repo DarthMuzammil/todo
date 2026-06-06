@@ -1,8 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Todo.Application.Interfaces;
 using Todo.Domain.Entities;
 using Todo.Infrastructure;
 using Todo.Infrastructure.Persistence;
 using Todo.Infrastructure.Repositories;
+using Todo.Tests.Support;
 
 namespace Todo.Tests.Repositories;
 
@@ -11,7 +13,7 @@ public class EfListRepositoryTests
 {
     private string _dbPath = null!;
     private TodoDbContext _context = null!;
-    private EfListRepository _repository = null!;
+    private IListRepository _repository = null!;
     private UnitOfWork _unitOfWork = null!;
 
     [SetUp]
@@ -38,28 +40,19 @@ public class EfListRepositoryTests
             File.Delete(_dbPath);
     }
 
-    private async Task<Guid> SeedUserAsync()
-    {
-        var userId = Guid.NewGuid();
-        _context.Users.Add(new User
-        {
-            Id = userId,
-            Name = "Test User",
-            Email = $"test-{userId:N}@local.test"
-        });
-        await _context.SaveChangesAsync();
-        return userId;
-    }
+    private Task<Guid> SeedUserAsync() => ApplicationUserTestFactory.SeedAsync(_context);
 
     [Test]
     public async Task AddAsync_ThenGetById_ReturnsList()
     {
         var ownerId = await SeedUserAsync();
+        var workspaceId = await WorkspaceTestFactory.SeedPersonalWorkspaceAsync(_context, ownerId);
 
         var list = new TodoList
         {
             Id = Guid.NewGuid(),
             OwnerId = ownerId,
+            WorkspaceId = workspaceId,
             Title = "Test list",
             Color = "#ffffff",
             CreatedAt = DateTime.UtcNow,
@@ -81,11 +74,14 @@ public class EfListRepositoryTests
     {
         var ownerId = await SeedUserAsync();
         var otherOwnerId = await SeedUserAsync();
+        var ownerWorkspaceId = await WorkspaceTestFactory.SeedPersonalWorkspaceAsync(_context, ownerId);
+        var otherWorkspaceId = await WorkspaceTestFactory.SeedPersonalWorkspaceAsync(_context, otherOwnerId);
 
         var older = new TodoList
         {
             Id = Guid.NewGuid(),
             OwnerId = ownerId,
+            WorkspaceId = ownerWorkspaceId,
             Title = "Older",
             Color = "#111111",
             CreatedAt = DateTime.UtcNow.AddDays(-2),
@@ -97,6 +93,7 @@ public class EfListRepositoryTests
         {
             Id = Guid.NewGuid(),
             OwnerId = ownerId,
+            WorkspaceId = ownerWorkspaceId,
             Title = "Newer",
             Color = "#222222",
             CreatedAt = DateTime.UtcNow.AddDays(-1),
@@ -108,6 +105,7 @@ public class EfListRepositoryTests
         {
             Id = Guid.NewGuid(),
             OwnerId = ownerId,
+            WorkspaceId = ownerWorkspaceId,
             Title = "Deleted",
             Color = "#333333",
             CreatedAt = DateTime.UtcNow,
@@ -119,6 +117,7 @@ public class EfListRepositoryTests
         {
             Id = Guid.NewGuid(),
             OwnerId = otherOwnerId,
+            WorkspaceId = otherWorkspaceId,
             Title = "Other owner",
             Color = "#444444",
             CreatedAt = DateTime.UtcNow,
@@ -147,11 +146,13 @@ public class EfListRepositoryTests
     public async Task RemoveAsync_SoftDeletesList_GetByIdReturnsFailure()
     {
         var ownerId = await SeedUserAsync();
+        var workspaceId = await WorkspaceTestFactory.SeedPersonalWorkspaceAsync(_context, ownerId);
 
         var list = new TodoList
         {
             Id = Guid.NewGuid(),
             OwnerId = ownerId,
+            WorkspaceId = workspaceId,
             Title = "To delete",
             Color = "#000000",
             CreatedAt = DateTime.UtcNow,

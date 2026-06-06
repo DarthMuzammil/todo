@@ -2,13 +2,16 @@
 using Todo.Application.Commands.CreateTask;
 using Todo.Application.Commands.DeleteTask;
 using Todo.Application.Commands.UpdateTaskStatus;
+using Todo.Application.Identity;
 using Todo.Application.Queries.GetListById;
 using Todo.Application.Queries.GetTasksByListId;
 using Todo.Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Todo.Application;
 using Todo.Infrastructure;
+using Todo.Infrastructure.Persistence;
 using TaskStatus = Todo.Domain.Enums.TaskStatus;
 
 var configuration = new ConfigurationBuilder()
@@ -23,6 +26,9 @@ services.AddInfrastructure(configuration, "data/tasks.json", "data/lists.json");
 services.AddApplication();
 
 var provider = services.BuildServiceProvider();
+
+var consoleUserId = Guid.NewGuid();
+await SeedConsoleUserAsync(provider, consoleUserId);
 
 var listHandler = provider.GetRequiredService<CreateListHandler>();
 var handler = provider.GetRequiredService<CreateTaskHandler>();
@@ -56,7 +62,7 @@ while (true)
             var color = Console.ReadLine() ?? "#3B82F6";
 
             var listResult = await listHandler.HandleAsync(new CreateListCommand(
-                OwnerId: Guid.NewGuid(),
+                UserId: consoleUserId,
                 Title: title,
                 Color: color));
 
@@ -77,7 +83,7 @@ while (true)
                 Console.WriteLine("Invalid List Id");
                 break;
             }
-            var result = await selectListHandler.HandleAsync(new GetListByIdQuery(listId));
+            var result = await selectListHandler.HandleAsync(new GetListByIdQuery(listId, consoleUserId));
             if (result.IsSuccess)
             {
                 currentListId = result.Value!.Id;
@@ -101,7 +107,8 @@ while (true)
                 Title: taskTitle,
                 Description: "",
                 Priority: Priority.Medium,
-                DueDate: null
+                DueDate: null,
+                UserId: consoleUserId
             ));
             if (taskResult.IsSuccess)
             {
@@ -118,7 +125,7 @@ while (true)
                 Console.WriteLine("Please create a list first");
                 break;
             }
-            var tasksResult = await queryHandler.HandleAsync(new GetTasksByListIdQuery(currentListId.Value));
+            var tasksResult = await queryHandler.HandleAsync(new GetTasksByListIdQuery(currentListId.Value, consoleUserId));
             if (tasksResult.IsSuccess)
             {
                 Console.WriteLine($"Tasks in list ({tasksResult.Value!.Count})");
@@ -147,7 +154,8 @@ while (true)
                 break;
             }
             var newStatus = (TaskStatus)taskStatus;
-            var updateResult = await updateHandler.HandleAsync(new UpdateTaskStatusCommand(taskId, newStatus));
+            var updateResult = await updateHandler.HandleAsync(
+                new UpdateTaskStatusCommand(taskId, newStatus, consoleUserId));
             if (updateResult.IsSuccess)
             {
                 Console.WriteLine($"Updated to {updateResult.Value!.Status}");
@@ -164,7 +172,7 @@ while (true)
                 Console.WriteLine("Invalid Input");
                 break;
             }
-            var deleteResult = await deleteHandler.HandleAsync(new DeleteTaskCommand(deleteTaskId));
+            var deleteResult = await deleteHandler.HandleAsync(new DeleteTaskCommand(deleteTaskId, consoleUserId));
             if (deleteResult.IsSuccess)
             {
                 Console.WriteLine("Deleted Successfully");
@@ -180,4 +188,26 @@ while (true)
             Console.WriteLine("Not implemented yet.");
             break;
     }
+}
+
+static async Task SeedConsoleUserAsync(ServiceProvider provider, Guid userId)
+{
+    using var scope = provider.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<TodoDbContext>();
+    await context.Database.MigrateAsync();
+
+    if (await context.Users.AnyAsync(u => u.Id == userId))
+        return;
+
+    var email = $"console-{userId:N}@local.test";
+    context.Users.Add(new ApplicationUser
+    {
+        Id = userId,
+        Name = "Console User",
+        Email = email,
+        UserName = email,
+        NormalizedEmail = email.ToUpperInvariant(),
+        NormalizedUserName = email.ToUpperInvariant()
+    });
+    await context.SaveChangesAsync();
 }

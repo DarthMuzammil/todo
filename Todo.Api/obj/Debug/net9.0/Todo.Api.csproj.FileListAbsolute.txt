@@ -201,3 +201,13 @@
 /Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/runtimes/win-arm64/native/e_sqlite3.dll
 /Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/runtimes/win-x64/native/e_sqlite3.dll
 /Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/runtimes/win-x86/native/e_sqlite3.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.Bcl.Cryptography.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/Users/muzammil/Desktop/todo/Todo.Api/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll

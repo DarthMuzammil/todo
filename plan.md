@@ -21,7 +21,28 @@ This document covers **what comes next** — product expansion, design system ma
 | Vitest + RTL unit/component tests, Playwright E2E, GitHub Actions CI | ✅ |
 | Staging deploy (GitHub Pages + `VITE_API_BASE_URL`) | ✅ |
 
-**Backend today:** JSON file persistence (`JsonListRepository`, `JsonTaskRepository`). `User` entity exists in domain but is not wired to storage or auth. No `GET /api/lists` (list-all) endpoint.
+**Backend today:** SQLite + EF Core 9. Identity + JWT auth. Refresh cookie + logout live. SignalR list sync hub at `/hubs/lists`.
+
+---
+
+## Current progress (2026-06-06)
+
+| Phase | Summary |
+|-------|---------|
+| **Shipped MVP** | ✅ Complete (unchanged) |
+| **Phase 1 — Design system** | ✅ Engineering complete (FE-25–FE-31); DS-1–DS-7 spec in `designdoc.md` |
+| **Phase 2 — Sprint D (DB)** | ✅ Core done on **SQLite** (BE-2–BE-5); BE-1 partial (no Postgres/Docker yet); BE-4 partial (importer works, README TBD) |
+| **Phase 2 — Sprint E (Auth)** | ✅ BE-6/BE-8/BE-9 complete (register/login/refresh/logout); **FE-32–FE-35 complete** |
+| **Phase 3 — Sprint F (navigation)** | ✅ BE-10–BE-11, FE-36–FE-39 complete |
+| **Phase 3 — Sprint G (sharing)** | ✅ BE-12–BE-14, FE-40–FE-43 complete; invite link recovery via resend |
+| **Phase 3 — Sprint H (live sync)** | ✅ BE-15–BE-17, FE-44–FE-46 complete |
+| **Phase 3 — Sprint I (notifications)** | ✅ BE-18–BE-19, FE-47–FE-48 complete; FE-49 deferred |
+
+### What's next (recommended order)
+
+1. **Sprint J** — Productivity expansion (Kanban, tags, search — pick 2–3)
+2. **BE-1 / BE-4** — Postgres/Docker + import README (optional hardening)
+3. **FE-49** — Email digest spike (SendGrid/SES evaluation)
 
 ---
 
@@ -54,15 +75,17 @@ A **fast, trustworthy task workspace** for individuals and teams — not another
 
 Design owns these artifacts before engineering starts component work. Store in `Todo.Web/docs/design/` (Figma link + exported specs).
 
-| ID | Deliverable | Contents |
-|----|-------------|----------|
-| DS-1 | **Brand & color palette** | Primary, secondary, neutral scale (50–900), semantic colors (success, warning, danger, info), surface/background hierarchy, contrast ratios ≥ 4.5:1 for body text |
-| DS-2 | **Typography system** | Font stack (or licensed family), type scale (display → caption), weight rules, line-height per size |
-| DS-3 | **Spacing & layout grid** | 4px or 8px base grid; page max-widths; sidebar width; breakpoints (mobile 375, tablet 768, desktop 1024+) |
-| DS-4 | **Elevation & borders** | Shadow levels (0–3), border radii, divider usage |
-| DS-5 | **Component specs** | Button (primary/secondary/ghost/danger, sizes), Input, Select, Textarea, Badge, Card, Empty state, Skeleton, Toast/alert, Modal/confirm dialog, Sidebar nav item |
-| DS-6 | **Iconography** | Icon set choice (e.g. Lucide/Heroicons), size grid (16/20/24), usage rules |
-| DS-7 | **Motion** | Transition durations (fast 150ms, normal 250ms), easing curves; when *not* to animate (respect `prefers-reduced-motion`) |
+| ID | Status | Deliverable | Contents |
+|----|--------|-------------|----------|
+| DS-1 | ✅ | **Brand & color palette** | Primary, secondary, neutral scale (50–900), semantic colors (success, warning, danger, info), surface/background hierarchy, contrast ratios ≥ 4.5:1 for body text |
+| DS-2 | ✅ | **Typography system** | Font stack (or licensed family), type scale (display → caption), weight rules, line-height per size |
+| DS-3 | ✅ | **Spacing & layout grid** | 4px or 8px base grid; page max-widths; sidebar width; breakpoints (mobile 375, tablet 768, desktop 1024+) |
+| DS-4 | ✅ | **Elevation & borders** | Shadow levels (0–3), border radii, divider usage |
+| DS-5 | ✅ | **Component specs** | Button (primary/secondary/ghost/danger, sizes), Input, Select, Textarea, Badge, Card, Empty state, Skeleton, Toast/alert, Modal/confirm dialog, Sidebar nav item |
+| DS-6 | ✅ | **Iconography** | Icon set choice (e.g. Lucide/Heroicons), size grid (16/20/24), usage rules |
+| DS-7 | ✅ | **Motion** | Transition durations (fast 150ms, normal 250ms), easing curves; when *not* to animate (respect `prefers-reduced-motion`) |
+
+_Specs in `Todo.Web/designdoc.md`; Figma link still TBD._
 
 **Design principles (proposed — design to ratify):**
 
@@ -72,15 +95,15 @@ Design owns these artifacts before engineering starts component work. Store in `
 
 ### Engineering sprints (Sprint B–C)
 
-| ID | Type | Title | Pts | Acceptance criteria |
-|----|------|-------|-----|---------------------|
-| FE-25 | Story | Design tokens v2 | 5 | Replace ad-hoc colors in CSS with semantic tokens from DS-1/DS-2 (`--color-text-primary`, `--color-surface-raised`, `--color-status-done`, etc.); document token map in `docs/design/tokens.md` |
-| FE-26 | Story | Core component library | 8 | Shared `Button`, `Input`, `Select`, `Badge`, `Card` in `src/shared/components/ui/`; variants match DS-5; used in create-list, create-task, task item |
-| FE-27 | Story | Layout shell refresh | 5 | `AppLayout` uses new nav patterns; list page header hierarchy per DS-3; sidebar placeholder region (empty until Phase 3) |
-| FE-28 | Task | Confirm dialog component | 3 | Replace inline delete confirm with accessible `ConfirmDialog` (focus trap, Esc, `role="alertdialog"`) |
-| FE-29 | Task | Empty & error state illustrations | 3 | Consistent empty/error panels using DS-5 empty-state pattern |
-| FE-30 | Task | Dark mode (optional) | 5 | `[data-theme="dark"]` token set from DS-1; toggle in header; persists in `localStorage` |
-| FE-31 | Task | Visual regression baseline | 3 | Playwright screenshot tests for home + list page at 375px and 1280px |
+| ID | Status | Type | Title | Pts | Acceptance criteria |
+|----|--------|------|-------|-----|---------------------|
+| FE-25 | ✅ | Story | Design tokens v2 | 5 | Replace ad-hoc colors in CSS with semantic tokens from DS-1/DS-2 (`--color-text-primary`, `--color-surface-raised`, `--color-status-done`, etc.); document token map in `docs/design/tokens.md` |
+| FE-26 | ✅ | Story | Core component library | 8 | Shared `Button`, `Input`, `Select`, `Badge`, `Card` in `src/shared/components/ui/`; variants match DS-5; used in create-list, create-task, task item |
+| FE-27 | ✅ | Story | Layout shell refresh | 5 | `AppLayout` uses new nav patterns; list page header hierarchy per DS-3; sidebar region (`ListsSidebar` wired in Sprint F) |
+| FE-28 | ✅ | Task | Confirm dialog component | 3 | Replace inline delete confirm with accessible `ConfirmDialog` (focus trap, Esc, `role="alertdialog"`) |
+| FE-29 | ✅ | Task | Empty & error state illustrations | 3 | Consistent empty/error panels using DS-5 empty-state pattern |
+| FE-30 | ✅ | Task | Dark mode (optional) | 5 | `[data-theme="dark"]` token set from DS-1; toggle in header; persists in `localStorage` |
+| FE-31 | ✅ | Task | Visual regression baseline | 3 | Playwright screenshot tests for home + list page at 375px and 1280px |
 
 **Deliverable:** UI matches design system; new features must use shared components, not one-off styles.
 
@@ -101,46 +124,46 @@ Design owns these artifacts before engineering starts component work. Store in `
 
 ### Architecture decisions (ADR required before Sprint D)
 
-| Decision | Recommendation | Alternatives |
-|----------|----------------|--------------|
-| Database | **PostgreSQL** (or SQL Server if team is .NET/Azure-native) | SQLite (dev only), Cosmos DB |
-| ORM | **EF Core 9** | Dapper |
-| Auth | **ASP.NET Core Identity** + JWT bearer for SPA | Auth0, Entra ID |
-| Password storage | Identity default (PBKDF2) | — |
-| Session | Short-lived access JWT + refresh token in httpOnly cookie | Local storage (avoid) |
+| Decision | Recommendation | Status |
+|----------|----------------|--------|
+| Database | **PostgreSQL** (or SQL Server if team is .NET/Azure-native) | 🔧 **SQLite** in use locally; Postgres/Docker deferred |
+| ORM | **EF Core 9** | ✅ |
+| Auth | **ASP.NET Core Identity** + JWT bearer for SPA | ✅ Register/login/me/refresh/logout |
+| Password storage | Identity default (PBKDF2) | ✅ |
+| Session | Short-lived access JWT + refresh token in httpOnly cookie | ✅ |
 
 ### Sprint D — Database foundation (backend)
 
-| ID | Type | Title | Pts | Acceptance criteria |
-|----|------|-------|-----|---------------------|
-| BE-1 | Story | EF Core + PostgreSQL setup | 5 | `Todo.Infrastructure` DbContext; connection string via config/env; Docker Compose for local Postgres |
-| BE-2 | Story | Schema: users, lists, tasks | 5 | Tables map to domain entities; `OwnerId` FK on lists; soft-delete columns preserved; indexes on `OwnerId`, `ListId` |
-| BE-3 | Story | EF repository implementations | 8 | `EfListRepository`, `EfTaskRepository` implement existing interfaces; JSON repos removed from DI |
-| BE-4 | Task | Data migration script | 5 | One-time import from `data/lists.json` + `data/tasks.json` into DB; idempotent; documented in README |
-| BE-5 | Task | Repository integration tests | 5 | Testcontainers or in-memory provider; cover CRUD paths currently in `Json*RepositoryTests` |
+| ID | Status | Type | Title | Pts | Acceptance criteria |
+|----|--------|------|-------|-----|---------------------|
+| BE-1 | 🔧 | Story | EF Core + PostgreSQL setup | 5 | `Todo.Infrastructure` DbContext; connection string via config/env; Docker Compose for local Postgres — **SQLite + migrations shipped; Postgres/Docker not yet** |
+| BE-2 | ✅ | Story | Schema: users, lists, tasks | 5 | Tables map to domain entities; `OwnerId` FK on lists; soft-delete columns preserved; indexes on `OwnerId`, `ListId` |
+| BE-3 | ✅ | Story | EF repository implementations | 8 | `EfListRepository`, `EfTaskRepository` implement existing interfaces; JSON repos removed from DI |
+| BE-4 | 🔧 | Task | Data migration script | 5 | One-time import from `data/lists.json` + `data/tasks.json` into DB; idempotent; documented in README — **`JsonDataImporter` + tests done; README TBD** |
+| BE-5 | ✅ | Task | Repository integration tests | 5 | Testcontainers or in-memory provider; cover CRUD paths currently in `Json*RepositoryTests` — **`EfListRepositoryTests` + `EfTaskRepositoryTests` (SQLite + migrate)** |
 
 ### Sprint E — Authentication (backend + frontend)
 
-| ID | Type | Title | Pts | Acceptance criteria |
-|----|------|-------|-----|---------------------|
-| BE-6 | Story | Identity + user store | 8 | Register, login, refresh, logout endpoints; `Users` table; password validation rules |
-| BE-7 | Story | Protect API endpoints | 5 | All list/task routes require authenticated user; `ownerId` derived from JWT claims, not request body |
-| BE-8 | Story | `GET /api/users/me` | 2 | Returns current user profile (id, name, email) |
-| BE-9 | Task | CORS + cookie/JWT config | 3 | SPA origin allowed; refresh cookie secure/same-site in staging |
-| FE-32 | Story | Auth pages (register, login) | 5 | Forms with validation; friendly error messages; redirect to intended route after login |
-| FE-33 | Story | Auth context + protected routes | 5 | `AuthProvider`; unauthenticated users redirected to login; token refresh on 401 |
-| FE-34 | Task | API client credentials | 3 | Attach bearer token to requests; refresh flow; remove dev `ownerId` from `shared/config/dev.js` |
-| FE-35 | Task | Auth E2E smoke | 3 | Register → login → create list → add task in Playwright |
+| ID | Status | Type | Title | Pts | Acceptance criteria |
+|----|--------|------|-------|-----|---------------------|
+| BE-6 | ✅ | Story | Identity + user store | 8 | Register, login, refresh, logout endpoints; `Users` table; password validation rules |
+| BE-7 | ✅ | Story | Protect API endpoints | 5 | All list/task routes require authenticated user; `ownerId` derived from JWT claims, not request body |
+| BE-8 | ✅ | Story | `GET /api/users/me` | 2 | Returns current user profile (id, name, email) |
+| BE-9 | ✅ | Task | CORS + cookie/JWT config | 3 | SPA origin allowed; refresh cookie secure/same-site in staging |
+| FE-32 | ✅ | Story | Auth pages (register, login) | 5 | Forms with validation; friendly error messages; redirect to intended route after login |
+| FE-33 | ✅ | Story | Auth context + protected routes | 5 | `AuthProvider`; unauthenticated users redirected to login; 401 → login (refresh deferred until BE-9) |
+| FE-34 | ✅ | Task | API client credentials | 3 | Attach bearer token to requests; remove dev `ownerId` from `shared/config/dev.js` |
+| FE-35 | ✅ | Task | Auth E2E smoke | 3 | Register → login → create list → add task in Playwright |
 
-**Deliverable:** Data lives in PostgreSQL; users authenticate; JSON repos retired; staging uses managed DB.
+**Deliverable:** Data lives in PostgreSQL; users authenticate; JSON repos retired; staging uses managed DB. — **🔧 SQLite + EF in prod path for now; JSON repos retired from DI.**
 
 ### Security checklist (non-negotiable)
 
-- [ ] Passwords hashed; never logged
+- [x] Passwords hashed; never logged (Identity `UserManager`)
 - [ ] Rate limiting on login/register
 - [ ] HTTPS only in staging/production
-- [ ] No secrets in frontend bundle
-- [ ] Authorization: user A cannot read/write user B's lists (integration test)
+- [ ] No secrets in frontend bundle (`Jwt:Key` must stay server-side)
+- [x] Authorization: user A cannot read/write user B's lists (integration test) — **`ListOwnershipHandlerTests`**
 
 ---
 
@@ -156,14 +179,16 @@ Design owns these artifacts before engineering starts component work. Store in `
 
 **User problem:** "I have several lists but can only reach them if I bookmark URLs."
 
-| ID | Type | Title | Pts | Acceptance criteria |
-|----|------|-------|-----|---------------------|
-| BE-10 | Story | `GET /api/lists` | 3 | Returns current user's non-deleted lists; sorted by `UpdatedAt` desc; pagination optional (limit/offset) |
-| BE-11 | Task | List metadata on create | 2 | `UpdatedAt` maintained on list and task mutations |
-| FE-36 | Story | Sidebar navigation | 8 | Persistent sidebar (collapsible on mobile); all lists listed; active list highlighted; create-list from sidebar |
-| FE-37 | Story | Home page redesign | 5 | Authenticated home = dashboard: recent lists, quick-create, empty state for new users |
-| FE-38 | Task | Deep-link preservation | 2 | `/lists/:id` still works; sidebar syncs selection |
-| FE-39 | Task | List rename & delete | 5 | `PATCH /api/lists/:id`, `DELETE /api/lists/:id` (soft delete); UI in list header |
+**Note:** Started before Sprint E finished — uses `DEV_OWNER_ID` until BE-7 + FE-34 land.
+
+| ID | Status | Type | Title | Pts | Acceptance criteria |
+|----|--------|------|-------|-----|---------------------|
+| BE-10 | ✅ | Story | `GET /api/lists` | 3 | Returns current user's non-deleted lists; sorted by `UpdatedAt` desc; pagination optional — **`GET /api/lists` uses JWT user (BE-7 done)** |
+| BE-11 | ✅ | Task | List metadata on create | 2 | `UpdatedAt` maintained on list and task mutations — **on create, status change, list update; soft-delete via `RemoveAsync`** |
+| FE-36 | ✅ | Story | Sidebar navigation | 8 | Persistent sidebar (collapsible on mobile); all lists listed; active list highlighted; home link in sidebar |
+| FE-37 | ✅ | Story | Home page redesign | 5 | Authenticated home = dashboard: recent lists, quick-create, empty state for new users |
+| FE-38 | ✅ | Task | Deep-link preservation | 2 | `/lists/:id` still works; sidebar syncs selection |
+| FE-39 | ✅ | Task | List rename & delete | 5 | `PATCH /api/lists/:id`, `DELETE /api/lists/:id` (soft delete); rename + delete in list header with confirm dialog |
 
 **Success metric:** Median time to switch lists < 2 seconds; ≥ 30% of active users create a second list within 7 days.
 
@@ -175,13 +200,13 @@ Design owns these artifacts before engineering starts component work. Store in `
 
 | ID | Type | Title | Pts | Acceptance criteria |
 |----|------|-------|-----|---------------------|
-| BE-12 | Story | Workspace model | 8 | `Workspace`, `WorkspaceMember`, `Role` (Owner, Editor, Viewer); lists belong to a workspace |
-| BE-13 | Story | Invite flow | 5 | Invite by email; pending invite token; accept/decline |
-| BE-14 | Story | Authorization middleware | 5 | Every list/task operation checks workspace role; Viewer = read-only |
-| FE-40 | Story | Share dialog | 5 | Invite by email; show current members + roles; revoke access |
-| FE-41 | Story | Role-based UI | 5 | Hide write controls for Viewers; show "View only" badge |
-| FE-42 | Task | Workspace switcher | 5 | Header dropdown: Personal / Shared workspaces |
-| FE-43 | Task | Settings page | 3 | Profile (name), change password, sign out all sessions |
+| BE-12 | ✅ | Story | Workspace model | 8 | `Workspace`, `WorkspaceMember`, `Role`; lists belong to a workspace |
+| BE-13 | ✅ | Story | Invite flow | 5 | Invite by email; pending token; accept/decline endpoints |
+| BE-14 | ✅ | Story | Authorization middleware | 5 | List/task operations check workspace role; Viewer read-only; Editor/Owner can mutate |
+| FE-40 | ✅ | Story | Share dialog | 5 | Invite by email; members + pending invites; copy invite link; revoke member |
+| FE-41 | ✅ | Story | Role-based UI | 5 | Hide write controls for Viewers; "View only" badge |
+| FE-42 | ✅ | Task | Workspace switcher | 5 | Header dropdown; create shared workspace; filter lists by workspace |
+| FE-43 | ✅ | Task | Settings page | 3 | Profile (name), change password, sign out all sessions |
 
 **Success metric:** Shared-list creation rate; invite acceptance rate > 50%.
 
@@ -193,12 +218,12 @@ Design owns these artifacts before engineering starts component work. Store in `
 
 | ID | Type | Title | Pts | Acceptance criteria |
 |----|------|-------|-----|---------------------|
-| BE-15 | Spike | Conflict strategy ADR | 2 | Document: last-write-wins vs. operational transform; start with LWW + version column |
-| BE-16 | Story | SignalR hub | 8 | Events: `TaskCreated`, `TaskUpdated`, `TaskDeleted`, `ListUpdated`; scoped to workspace/list groups |
-| BE-17 | Task | Event emission in handlers | 5 | All mutating commands publish hub events after DB commit |
-| FE-44 | Story | SignalR client hook | 5 | `useListSync(listId)` subscribes; reconnect with exponential backoff |
-| FE-45 | Story | Live UI updates | 5 | Incoming events update task list without full refetch; optimistic UI reconciles on conflict |
-| FE-46 | Task | Connection status indicator | 2 | Subtle "Live" / "Reconnecting…" in list header |
+| BE-15 | ✅ | Spike | Conflict strategy ADR | 2 | Document: last-write-wins vs. operational transform; start with LWW + version column — **`docs/adr/002-realtime-conflict-strategy.md`** |
+| BE-16 | ✅ | Story | SignalR hub | 8 | Events: `TaskCreated`, `TaskUpdated`, `TaskDeleted`, `ListUpdated`; scoped to workspace/list groups |
+| BE-17 | ✅ | Task | Event emission in handlers | 5 | All mutating commands publish hub events after DB commit |
+| FE-44 | ✅ | Story | SignalR client hook | 5 | `useListSync(listId)` subscribes; reconnect with exponential backoff |
+| FE-45 | ✅ | Story | Live UI updates | 5 | Incoming events update task list without full refetch; optimistic UI reconciles on conflict |
+| FE-46 | ✅ | Task | Connection status indicator | 2 | Subtle "Live" / "Reconnecting…" in list header |
 
 **Success metric:** < 2s perceived sync latency between two clients on same list.
 
@@ -210,11 +235,11 @@ Design owns these artifacts before engineering starts component work. Store in `
 
 | ID | Type | Title | Pts | Acceptance criteria |
 |----|------|-------|-----|---------------------|
-| BE-18 | Story | Activity log | 5 | Append-only `Activity` table: actor, action, entity, timestamp |
-| BE-19 | Story | In-app notifications API | 5 | `GET /api/notifications`; mark read; unread count |
-| FE-47 | Story | Activity feed (list scope) | 5 | "Alex marked 'Buy milk' done" on list page |
-| FE-48 | Story | Notification bell | 5 | Header bell + dropdown; badge count; link to relevant list/task |
-| FE-49 | Spike | Email digest (optional) | 3 | Daily summary email — evaluate SendGrid/SES; defer if cost unclear |
+| BE-18 | ✅ | Story | Activity log | 5 | Append-only `Activity` table: actor, action, entity, timestamp |
+| BE-19 | ✅ | Story | In-app notifications API | 5 | `GET /api/notifications`; mark read; unread count |
+| FE-47 | ✅ | Story | Activity feed (list scope) | 5 | "Alex marked 'Buy milk' done" on list page |
+| FE-48 | ✅ | Story | Notification bell | 5 | Header bell + dropdown; badge count; link to relevant list/task |
+| FE-49 | ⏸️ | Spike | Email digest (optional) | 3 | Daily summary email — evaluate SendGrid/SES; defer if cost unclear |
 
 ---
 
@@ -351,7 +376,7 @@ npm run dev
 
 Open `http://localhost:5173` (API at `http://localhost:5167`).
 
-After Phase 2, add `docker compose up -d` for local PostgreSQL (documented in repo README).
+**Database:** SQLite file at `data/todo.db` (auto-migrated on startup). PostgreSQL + `docker compose up -d` deferred (BE-1).
 
 ---
 
@@ -362,3 +387,9 @@ After Phase 2, add `docker compose up -d` for local PostgreSQL (documented in re
 | 2026-06-05 | Initial plan: scaffold + Phase 1–3 breakdown |
 | 2026-06-06 | Migrated frontend to plain JavaScript; removed TanStack Query |
 | 2026-06-06 | MVP + hardening shipped; roadmap reset: removed completed sprints, dropped Phase 4 (GA), expanded Phase 3, added Phase 1 (design system), Phase 2 (DB + auth), product backlog |
+| 2026-06-06 | Progress update: Phase 1 (FE-25–FE-31) complete; Sprint D core (BE-2–BE-5) on SQLite; BE-6/BE-8 partial; Sprint F started (BE-10, FE-36, FE-38); next: BE-7 → refresh/logout → FE-32–FE-35 |
+| 2026-06-06 | BE-7 complete: list/task routes `[Authorize]`; `ownerId` from JWT; `ListOwnershipChecker` + handler tests |
+| 2026-06-06 | FE-32–FE-37, FE-35 complete (auth UI, protected routes, dashboard, mobile sidebar); FE-39 blocked on backend PATCH/DELETE |
+| 2026-06-06 | BE-14 complete: workspace RBAC on list/task ops; Viewer read-only; shared workspace lists visible to members |
+| 2026-06-06 | Sprint G complete: FE-43 settings; invite link recovery (resend); Sprint H SignalR live sync (BE-15–BE-17, FE-44–FE-46) |
+| 2026-06-06 | Sprint I complete: activity log + in-app notifications (BE-18–BE-19, FE-47–FE-48) |

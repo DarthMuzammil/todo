@@ -11,6 +11,7 @@
   font-size: var(--font-heading-md);
   font-weight: 600;
   line-height: var(--line-height-heading-md);
+  letter-spacing: -0.02em;
   min-width: 0;
   flex: 1 1 12rem;
 }
@@ -22,14 +23,15 @@
 }
 
 .task-item__description {
-  margin: var(--space-2) 0 0;
+  margin: var(--space-3) 0 0;
   color: var(--color-text-secondary);
   font-size: var(--font-body-sm);
+  line-height: var(--line-height-body-sm);
   word-break: break-word;
 }
 
 .task-item__due {
-  margin: var(--space-2) 0 0;
+  margin: var(--space-3) 0 0;
   font-size: var(--font-body-sm);
   color: var(--color-text-subtle);
   font-variant-numeric: tabular-nums;
@@ -45,7 +47,7 @@
   flex-wrap: wrap;
   align-items: flex-end;
   gap: var(--space-3);
-  margin-top: var(--space-4);
+  margin-top: var(--space-5);
   padding-top: var(--space-4);
   border-top: var(--border-width-default) solid var(--color-border-default);
 }

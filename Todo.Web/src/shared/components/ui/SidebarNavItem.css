@@ -1,37 +1,51 @@
 .sidebar-nav-item {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  height: 40px;
+  gap: var(--space-3);
+  min-height: 42px;
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-sm);
-  color: var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  border: var(--border-width-default) solid transparent;
+  color: var(--color-nav-text);
   text-decoration: none;
   font-size: var(--font-body-sm);
-  transition: background-color var(--duration-fast) var(--ease-default);
+  font-weight: 500;
+  line-height: var(--line-height-body-sm);
+  transition:
+    background-color var(--duration-fast) var(--ease-default),
+    color var(--duration-fast) var(--ease-default),
+    border-color var(--duration-fast) var(--ease-default);
 }
 
 .sidebar-nav-item:hover {
-  background: var(--color-bg-subtle);
-  color: var(--color-text-primary);
+  background: var(--color-nav-bg-hover);
+  color: var(--color-nav-text-hover);
 }
 
 .sidebar-nav-item--active {
-  background: var(--color-brand-50);
-  color: var(--color-brand-700);
-  font-weight: 500;
+  background: var(--color-nav-bg-active);
+  border-color: color-mix(in srgb, var(--color-nav-indicator) 25%, transparent);
+  color: var(--color-nav-text-active);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--color-nav-indicator);
 }
 
 .sidebar-nav-item__icon {
   flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.sidebar-nav-item--active .sidebar-nav-item__icon {
+  opacity: 1;
+  color: var(--color-nav-indicator);
 }
 
 .sidebar-nav-item__swatch {
   flex-shrink: 0;
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: var(--radius-full);
-  border: var(--border-width-default) solid var(--color-border-strong);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-text-primary) 14%, transparent);
 }
 
 .sidebar-nav-item__label {
@@ -39,4 +53,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.sidebar-nav-item:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
 }
