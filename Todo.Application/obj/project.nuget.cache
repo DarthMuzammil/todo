@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "uRfMZ2ul6uw=",
+  "dgSpecHash": "dPJZK52bCYc=",
   "success": true,
-  "projectFilePath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Application/Todo.Application.csproj",
+  "projectFilePath": "/Users/muzammil/Desktop/todo/Todo.Application/Todo.Application.csproj",
   "expectedPackageFiles": [
     "/Users/muzammil/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.8/microsoft.extensions.dependencyinjection.abstractions.10.0.8.nupkg.sha512",
-    "/Users/muzammil/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.11/microsoft.aspnetcore.app.ref.9.0.11.nupkg.sha512",
-    "/Users/muzammil/.nuget/packages/microsoft.netcore.app.ref/9.0.11/microsoft.netcore.app.ref.9.0.11.nupkg.sha512"
+    "/Users/muzammil/.nuget/packages/microsoft.netcore.app.ref/9.0.11/microsoft.netcore.app.ref.9.0.11.nupkg.sha512",
+    "/Users/muzammil/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.11/microsoft.aspnetcore.app.ref.9.0.11.nupkg.sha512"
   ],
   "logs": []
 }

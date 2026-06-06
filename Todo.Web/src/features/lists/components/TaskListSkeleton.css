@@ -1,0 +1,9 @@
+.task-list-skeleton {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.task-list-skeleton li + li {
+  margin-top: var(--space-3);
+}

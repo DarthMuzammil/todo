@@ -8,10 +8,12 @@ namespace Todo.Application.Commands.CreateTask;
 public class CreateTaskHandler
 {
     private readonly ITaskRepository _taskRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateTaskHandler(ITaskRepository taskRepository)
+    public CreateTaskHandler(ITaskRepository taskRepository, IUnitOfWork unitOfWork)
     {
         _taskRepository = taskRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<TodoTask>> HandleAsync(CreateTaskCommand command)
@@ -31,8 +33,11 @@ public class CreateTaskHandler
             IsDeleted = false
         };
 
-        // var evt = new TaskCreatedEvent(...) — wire later
+        var addResult = await _taskRepository.AddAsync(task);
+        if (!addResult.IsSuccess)
+            return addResult;
 
-        return await _taskRepository.AddAsync(task);
+        await _unitOfWork.CommitAsync();
+        return addResult;
     }
 }

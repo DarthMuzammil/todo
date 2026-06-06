@@ -1,34 +1,38 @@
 using Todo.Application.Interfaces;
 using Todo.Domain.Entities;
 using Todo.Application.Common;
-using TaskStatus = Todo.Domain.Enums.TaskStatus;
 
 namespace Todo.Application.Commands.CreateList;
 
 public class CreateListHandler
 {
     private readonly IListRepository _listRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateListHandler(IListRepository listRepository)
+    public CreateListHandler(IListRepository listRepository, IUnitOfWork unitOfWork)
     {
         _listRepository = listRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<TodoList>> HandleAsync(CreateListCommand command)
     {
-        var task = new TodoList
+        var list = new TodoList
         {
             Id = Guid.NewGuid(),
             OwnerId = command.OwnerId,
             Title = command.Title,
+            Color = command.Color ?? "#3B82F6",
             CreatedAt = DateTime.UtcNow,
-            Color = command.Color,
             UpdatedAt = DateTime.UtcNow,
             IsDeleted = false
         };
 
-        // var evt = new TaskCreatedEvent(...) — wire later
+        var addResult = await _listRepository.AddAsync(list);
+        if (!addResult.IsSuccess)
+            return addResult;
 
-        return await _listRepository.AddAsync(task);
+        await _unitOfWork.CommitAsync();
+        return addResult;
     }
 }

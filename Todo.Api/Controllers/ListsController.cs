@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Todo.Application.Commands.CreateList;
 using Todo.Application.Queries.GetListById;
+using Todo.Application.Queries.GetListsByOwnerId;
 
 namespace Todo.Api.Controllers;
 
@@ -10,13 +11,30 @@ public class ListsController : ControllerBase
 {
     private readonly CreateListHandler _createListHandler;
     private readonly GetListByIdHandler _getListByIdHandler;
+    private readonly GetListsByOwnerIdHandler _getListsByOwnerIdHandler;
 
     public ListsController(
         CreateListHandler createListHandler,
-        GetListByIdHandler getListByIdHandler)
+        GetListByIdHandler getListByIdHandler,
+        GetListsByOwnerIdHandler getListsByOwnerIdHandler)
     {
         _createListHandler = createListHandler;
         _getListByIdHandler = getListByIdHandler;
+        _getListsByOwnerIdHandler = getListsByOwnerIdHandler;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] Guid ownerId)
+    {
+        if (ownerId == Guid.Empty)
+            return BadRequest(new { error = "ownerId is required" });
+
+        var result = await _getListsByOwnerIdHandler.HandleAsync(new GetListsByOwnerIdQuery(ownerId));
+
+        if (!result.IsSuccess)
+            return BadRequest(new { error = result.Error });
+
+        return Ok(result.Value);
     }
 
     [HttpGet("{id:guid}")]

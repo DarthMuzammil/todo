@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Console/Todo.Console.csproj": {}
+    "/Users/muzammil/Desktop/todo/Todo.Console/Todo.Console.csproj": {}
   },
   "projects": {
-    "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Application/Todo.Application.csproj": {
+    "/Users/muzammil/Desktop/todo/Todo.Application/Todo.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Application/Todo.Application.csproj",
+        "projectUniqueName": "/Users/muzammil/Desktop/todo/Todo.Application/Todo.Application.csproj",
         "projectName": "Todo.Application",
-        "projectPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Application/Todo.Application.csproj",
+        "projectPath": "/Users/muzammil/Desktop/todo/Todo.Application/Todo.Application.csproj",
         "packagesPath": "/Users/muzammil/.nuget/packages/",
-        "outputPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Application/obj/",
+        "outputPath": "/Users/muzammil/Desktop/todo/Todo.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/muzammil/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/Todo.Domain.csproj": {
-                "projectPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/Todo.Domain.csproj"
+              "/Users/muzammil/Desktop/todo/Todo.Domain/Todo.Domain.csproj": {
+                "projectPath": "/Users/muzammil/Desktop/todo/Todo.Domain/Todo.Domain.csproj"
               }
             }
           }
@@ -83,14 +83,14 @@
         }
       }
     },
-    "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Console/Todo.Console.csproj": {
+    "/Users/muzammil/Desktop/todo/Todo.Console/Todo.Console.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Console/Todo.Console.csproj",
+        "projectUniqueName": "/Users/muzammil/Desktop/todo/Todo.Console/Todo.Console.csproj",
         "projectName": "Todo.Console",
-        "projectPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Console/Todo.Console.csproj",
+        "projectPath": "/Users/muzammil/Desktop/todo/Todo.Console/Todo.Console.csproj",
         "packagesPath": "/Users/muzammil/.nuget/packages/",
-        "outputPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Console/obj/",
+        "outputPath": "/Users/muzammil/Desktop/todo/Todo.Console/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/muzammil/.nuget/NuGet/NuGet.Config"
@@ -105,8 +105,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Infrastructure/Todo.Infrastructure.csproj": {
-                "projectPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Infrastructure/Todo.Infrastructure.csproj"
+              "/Users/muzammil/Desktop/todo/Todo.Infrastructure/Todo.Infrastructure.csproj": {
+                "projectPath": "/Users/muzammil/Desktop/todo/Todo.Infrastructure/Todo.Infrastructure.csproj"
               }
             }
           }
@@ -127,6 +127,10 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[10.0.8, )"
@@ -166,14 +170,14 @@
         }
       }
     },
-    "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/Todo.Domain.csproj": {
+    "/Users/muzammil/Desktop/todo/Todo.Domain/Todo.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/Todo.Domain.csproj",
+        "projectUniqueName": "/Users/muzammil/Desktop/todo/Todo.Domain/Todo.Domain.csproj",
         "projectName": "Todo.Domain",
-        "projectPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/Todo.Domain.csproj",
+        "projectPath": "/Users/muzammil/Desktop/todo/Todo.Domain/Todo.Domain.csproj",
         "packagesPath": "/Users/muzammil/.nuget/packages/",
-        "outputPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/",
+        "outputPath": "/Users/muzammil/Desktop/todo/Todo.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/muzammil/.nuget/NuGet/NuGet.Config"
@@ -235,14 +239,14 @@
         }
       }
     },
-    "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Infrastructure/Todo.Infrastructure.csproj": {
+    "/Users/muzammil/Desktop/todo/Todo.Infrastructure/Todo.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Infrastructure/Todo.Infrastructure.csproj",
+        "projectUniqueName": "/Users/muzammil/Desktop/todo/Todo.Infrastructure/Todo.Infrastructure.csproj",
         "projectName": "Todo.Infrastructure",
-        "projectPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Infrastructure/Todo.Infrastructure.csproj",
+        "projectPath": "/Users/muzammil/Desktop/todo/Todo.Infrastructure/Todo.Infrastructure.csproj",
         "packagesPath": "/Users/muzammil/.nuget/packages/",
-        "outputPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Infrastructure/obj/",
+        "outputPath": "/Users/muzammil/Desktop/todo/Todo.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/muzammil/.nuget/NuGet/NuGet.Config"
@@ -257,8 +261,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Application/Todo.Application.csproj": {
-                "projectPath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Application/Todo.Application.csproj"
+              "/Users/muzammil/Desktop/todo/Todo.Application/Todo.Application.csproj": {
+                "projectPath": "/Users/muzammil/Desktop/todo/Todo.Application/Todo.Application.csproj"
               }
             }
           }
@@ -279,9 +283,29 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[10.0.8, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             }
           },
           "imports": [

@@ -5,13 +5,21 @@ using Todo.Application.Commands.UpdateTaskStatus;
 using Todo.Application.Queries.GetListById;
 using Todo.Application.Queries.GetTasksByListId;
 using Todo.Domain.Enums;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Todo.Application;
 using Todo.Infrastructure;
 using TaskStatus = Todo.Domain.Enums.TaskStatus;
 
+var configuration = new ConfigurationBuilder()
+    .AddInMemoryCollection(new Dictionary<string, string?>
+    {
+        ["ConnectionStrings:Default"] = "Data Source=data/todo.db"
+    })
+    .Build();
+
 var services = new ServiceCollection();
-services.AddInfrastructure("data/tasks.json", "data/lists.json");
+services.AddInfrastructure(configuration, "data/tasks.json", "data/lists.json");
 services.AddApplication();
 
 var provider = services.BuildServiceProvider();

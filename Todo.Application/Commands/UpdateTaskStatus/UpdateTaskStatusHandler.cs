@@ -2,17 +2,18 @@ using Todo.Application.Common;
 using Todo.Application.Interfaces;
 using Todo.Domain.Entities;
 using Todo.Domain.Events;
-using TaskStatus = Todo.Domain.Enums.TaskStatus;
 
 namespace Todo.Application.Commands.UpdateTaskStatus;
 
 public class UpdateTaskStatusHandler
 {
     private readonly ITaskRepository _taskRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateTaskStatusHandler(ITaskRepository taskRepository)
+    public UpdateTaskStatusHandler(ITaskRepository taskRepository, IUnitOfWork unitOfWork)
     {
         _taskRepository = taskRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<TodoTask>> HandleAsync(UpdateTaskStatusCommand command)
@@ -33,6 +34,11 @@ public class UpdateTaskStatusHandler
             command.NewStatus,
             DateTime.UtcNow);
 
-        return await _taskRepository.UpdateAsync(task);
+        var updateResult = await _taskRepository.UpdateAsync(task);
+        if (!updateResult.IsSuccess)
+            return updateResult;
+
+        await _unitOfWork.CommitAsync();
+        return updateResult;
     }
 }

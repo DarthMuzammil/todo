@@ -50,7 +50,10 @@ public class JsonListRepository : IListRepository
     public async Task<Result<List<TodoList>>> GetByOwnerIdAsync(Guid ownerId)
     {
         var lists = await LoadListsAsync();
-        var filtered = lists.Where(l => l.OwnerId == ownerId && !l.IsDeleted).ToList();
+        var filtered = lists
+            .Where(l => l.OwnerId == ownerId && !l.IsDeleted)
+            .OrderByDescending(l => l.UpdatedAt)
+            .ToList();
         return Result<List<TodoList>>.Success(filtered);
     }
     public async Task<Result<TodoList>> AddAsync(TodoList list)

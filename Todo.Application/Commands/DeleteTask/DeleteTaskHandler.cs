@@ -7,14 +7,21 @@ namespace Todo.Application.Commands.DeleteTask;
 public class DeleteTaskHandler
 {
     private readonly ITaskRepository _taskRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteTaskHandler(ITaskRepository taskRepository)
+    public DeleteTaskHandler(ITaskRepository taskRepository, IUnitOfWork unitOfWork)
     {
         _taskRepository = taskRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<TodoTask>> HandleAsync(DeleteTaskCommand command)
     {
-        return await _taskRepository.RemoveAsync(command.TaskId);
+        var removeResult = await _taskRepository.RemoveAsync(command.TaskId);
+        if (!removeResult.IsSuccess)
+            return removeResult;
+
+        await _unitOfWork.CommitAsync();
+        return removeResult;
     }
 }

@@ -1,28 +1,10 @@
-.skeleton {
-    background: #e2e8f0;
-    border-radius: 4px;
-    animation: pulse 1.5s ease-in-out infinite;
+.list-header-skeleton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
 }
 
-.skeleton--title {
-    height: 2rem;
-    width: 60%;
-}
-
-.skeleton--swatch {
-    height: 1.5rem;
-    width: 1.5rem;
-    border-radius: 50%;
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.5;
-    }
+.list-header-skeleton__title {
+  max-width: 100%;
 }

@@ -1,0 +1,7 @@
+.task-list {
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
