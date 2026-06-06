@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "G5QQ9GzRijY=",
+  "success": true,
+  "projectFilePath": "/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Infrastructure/Todo.Infrastructure.csproj",
+  "expectedPackageFiles": [
+    "/Users/muzammil/.nuget/packages/microsoft.extensions.dependencyinjection/10.0.8/microsoft.extensions.dependencyinjection.10.0.8.nupkg.sha512",
+    "/Users/muzammil/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.8/microsoft.extensions.dependencyinjection.abstractions.10.0.8.nupkg.sha512",
+    "/Users/muzammil/.nuget/packages/microsoft.netcore.app.ref/9.0.11/microsoft.netcore.app.ref.9.0.11.nupkg.sha512",
+    "/Users/muzammil/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.11/microsoft.aspnetcore.app.ref.9.0.11.nupkg.sha512"
+  ],
+  "logs": []
+}

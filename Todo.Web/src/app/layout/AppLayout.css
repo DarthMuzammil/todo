@@ -1,0 +1,16 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout__header {
+  padding: 1rem;
+  width: 100%;
+}
+
+.layout__main {
+  margin: 0 auto;
+  max-width: 40rem;
+  padding: 1.5rem;
+}

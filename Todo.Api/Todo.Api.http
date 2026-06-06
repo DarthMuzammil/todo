@@ -1,0 +1,43 @@
+@Todo.Api_HostAddress = http://localhost:5167
+@listId = 00000000-0000-0000-0000-000000000001
+@taskId = 00000000-0000-0000-0000-000000000002
+
+### Get list by id
+GET {{Todo.Api_HostAddress}}/api/lists/{{listId}}
+Accept: application/json
+
+### Create list
+POST {{Todo.Api_HostAddress}}/api/lists
+Content-Type: application/json
+
+{
+  "ownerId": "00000000-0000-0000-0000-000000000001",
+  "title": "My List",
+  "color": "#3b82f6"
+}
+
+### Get tasks for a list
+GET {{Todo.Api_HostAddress}}/api/lists/{{listId}}/tasks
+Accept: application/json
+
+### Create task
+POST {{Todo.Api_HostAddress}}/api/lists/{{listId}}/tasks
+Content-Type: application/json
+
+{
+  "title": "Buy milk",
+  "description": "From the store",
+  "priority": 1,
+  "dueDate": null
+}
+
+### Update task status
+PATCH {{Todo.Api_HostAddress}}/api/lists/{{listId}}/tasks/{{taskId}}/status
+Content-Type: application/json
+
+{
+  "newStatus": 2
+}
+
+### Delete task
+DELETE {{Todo.Api_HostAddress}}/api/lists/{{listId}}/tasks/{{taskId}}

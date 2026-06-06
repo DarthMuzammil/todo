@@ -1,0 +1,11 @@
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/bin/Debug/net9.0/Todo.Domain.deps.json
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/bin/Debug/net9.0/Todo.Domain.dll
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/bin/Debug/net9.0/Todo.Domain.pdb
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/Debug/net9.0/Todo.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/Debug/net9.0/Todo.Domain.AssemblyInfoInputs.cache
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/Debug/net9.0/Todo.Domain.AssemblyInfo.cs
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/Debug/net9.0/Todo.Domain.csproj.CoreCompileInputs.cache
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/Debug/net9.0/Todo.Domain.dll
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/Debug/net9.0/refint/Todo.Domain.dll
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/Debug/net9.0/Todo.Domain.pdb
+/Users/muzammil/Desktop/codebases/learningCS/todo/Todo.Domain/obj/Debug/net9.0/ref/Todo.Domain.dll

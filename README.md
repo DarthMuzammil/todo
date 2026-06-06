@@ -1,44 +1,94 @@
-# Todo.Web
+# Todo
 
-React frontend for the Todo app. See the [root README](../README.md) for setup, environment variables, and the local dev workflow.
+A full-stack todo application: ASP.NET Web API backend (`Todo.Api`) and React frontend (`Todo.Web`).
 
-## Quick start
+## Prerequisites
+
+- [.NET 9 SDK](https://dotnet.microsoft.com/download)
+- [Node.js 20+](https://nodejs.org/) (for the frontend)
+
+## Repository layout
+
+| Path | Purpose |
+|------|---------|
+| `Todo.Api` | ASP.NET Web API — lists and tasks REST endpoints |
+| `Todo.Web` | React 19 + Vite + TypeScript frontend |
+| `Todo.Domain` / `Application` / `Infrastructure` | Backend layers (CQRS, repositories) |
+| `Todo.Console` | Console client |
+| `data/` | JSON persistence for the API (`tasks.json`, `lists.json`) |
+
+## Local development
+
+Run both services from the **repository root** so the API can resolve the `data/` folder.
+
+### 1. Start the API
 
 ```bash
+dotnet run --project Todo.Api
+```
+
+The API listens on **http://localhost:5167** (see `Todo.Api/Properties/launchSettings.json`).
+
+The `data/` directory must exist at the repo root. It is checked in with empty JSON arrays; the API reads and writes `data/tasks.json` and `data/lists.json`.
+
+### 2. Start the frontend
+
+```bash
+cd Todo.Web
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173 (with `Todo.Api` running at http://localhost:5167).
+The dev server runs at **http://localhost:5173**.
 
-## Scripts
+### 3. API connectivity
+
+Two options for calling the API from the frontend:
+
+| Mode | `VITE_API_BASE_URL` | Notes |
+|------|---------------------|-------|
+| **Vite proxy (recommended for local dev)** | `/api` | Vite proxies `/api` → `http://localhost:5167` — no CORS issues |
+| **Direct** | `http://localhost:5167` | Requires CORS (enabled on the API for `http://localhost:5173`) |
+
+Copy `.env.example` to `.env.local` and adjust if needed:
+
+```bash
+cp .env.example .env.local
+```
+
+## Frontend scripts (`Todo.Web`)
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Vite dev server with `/api` proxy |
-| `npm run build` | Type-check and production build |
-| `npm run lint` | ESLint |
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint (CI-ready) |
 | `npm run format` | Prettier write |
-| `npm run format:check` | Prettier check |
+| `npm run format:check` | Prettier check (CI-ready) |
 
-## Environment
+### Format on save (VS Code / Cursor)
 
-See `.env.example`. In local development, `.env.development` sets `VITE_API_BASE_URL=/api` so requests go through the Vite proxy.
+Install the [Prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode). Project settings in `.vscode/settings.json` enable format-on-save for TypeScript and TSX files.
 
-The shared default (when no env var is set) is `http://localhost:5167` — see `src/shared/config/env.ts`.
+## Source structure (`Todo.Web/src`)
 
-## MVP owner ID (FE-306)
+```
+src/
+  app/        — routing, layout, root App component
+  features/   — feature modules (lists, tasks, …)
+  shared/     — reusable components, hooks, config
+  api/        — typed HTTP client and DTOs
+```
 
-`POST /api/lists` requires an `ownerId`. Auth is not implemented yet, so the app uses a
-stand-in dev owner.
+Import aliases: `@/app`, `@/features`, `@/shared`, `@/api` (configured in `vite.config.ts` and `tsconfig.app.json`).
 
-| Item | Detail |
-|------|--------|
-| **Strategy** | Fixed UUID in `src/shared/config/dev.ts` |
-| **Default** | `00000000-0000-0000-0000-000000000001` |
-| **Override** | Set `VITE_DEV_OWNER_ID` in `.env.development` (see `.env.example`) |
-| **Usage** | `HomePage` passes `DEV_OWNER_ID` when calling `createList` |
-| **Replaced by** | FE-704 — real `ownerId` from the signed-in user |
+## Backend tests
 
-All lists created in local dev belong to this owner until user authentication lands.
-Not suitable for production multi-user scenarios.
+```bash
+dotnet test
+```
+
+## Further reading
+
+- `rules.md` — architecture decisions and learning guide
+- `plan.md` — frontend product and sprint plan
